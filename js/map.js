@@ -2,8 +2,8 @@
 
 var AVATAR_SRC = 'img/avatars/user0x.png';
 var TITLES = ['Большая уютная квартира', 'Маленькая неуютная квартира', 'Огромный прекрасный дворец',
-    'Маленький ужасный дворец', 'Красивый гостевой домик', 'Некрасивый негостеприимный домик',
-    'Уютное бунгало далеко от моря', 'Неуютное бунгало по колено в воде'];
+  'Маленький ужасный дворец', 'Красивый гостевой домик', 'Некрасивый негостеприимный домик',
+  'Уютное бунгало далеко от моря', 'Неуютное бунгало по колено в воде'];
 var PRICE_MIN = 1000;
 var PRICE_MAX = 1000000;
 var ROOMS_MIN = 1;
@@ -12,7 +12,7 @@ var GUESTS_MAX = 10;
 var CHECK_TIME = ['12:00', '13:00', '14:00'];
 var FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 var PHOTOS = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg',
-    'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
+  'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
 var markerParams = {
   X_MIN: 300,
   X_MAX: 900,
@@ -68,8 +68,9 @@ var getType = function (string) {
     'домик': 'house',
     'бунгало': 'bungalo'
   };
-  var reg = []
-  for ( var i in offerTypesTranslation) {
+  var reg = [];
+  for (var i in offerTypesTranslation) {
+    if (!offerTypesTranslation.hasOwnProperty(i)) continue;
     reg += i + '|';
   }
   reg = reg.substring(0, reg.length - 1);
@@ -135,15 +136,15 @@ var renderFeatures = function (advert, element) {
     for (var j = 0; j < featuresDiff.length; j++) {
       if (features[i] === featuresDiff[j]) {
         featuresDiff.splice(j, 1);
-      } 
+      }
     }
   }
   var listElement = element.querySelector('.popup__features');
-    for (i = 0; i < featuresDiff.length; i++) {
-      var featureClass = '.popup__feature--' + featuresDiff[i];
-      var featureElement = listElement.querySelector(featureClass);
-      listElement.removeChild(featureElement);
-    }
+  for (i = 0; i < featuresDiff.length; i++) {
+    var featureClass = '.popup__feature--' + featuresDiff[i];
+    var featureElement = listElement.querySelector(featureClass);
+    listElement.removeChild(featureElement);
+  }
 };
 
 var renderImgInhabitation = function (advert, element) {
@@ -172,7 +173,7 @@ var renderAdv = function (advert) {
 
   renderFeatures(advert, advElement);
   renderImgInhabitation(advert, advElement);
-  
+
   return advElement;
 };
 
