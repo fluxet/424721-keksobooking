@@ -70,8 +70,9 @@ var getType = function (string) {
   };
   var reg = [];
   for (var i in offerTypesTranslation) {
-    if (!offerTypesTranslation.hasOwnProperty(i)) continue;
-    reg += i + '|';
+    if (offerTypesTranslation.hasOwnProperty(i)) {
+      reg += i + '|';
+    }
   }
   reg = reg.substring(0, reg.length - 1);
   var keyWord = string.match(reg)[0];
