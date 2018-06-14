@@ -77,11 +77,11 @@ var getType = function (string) {
 var getAdvert = function (index) {
   var locationX = getRandomValue(markerParams.X_MIN, markerParams.X_MAX);
   var locationY = getRandomValue(markerParams.Y_MIN, markerParams.Y_MAX);
-  
+
   var avatarSrc = (index < 9) ? (advertParams.AVATAR_SRC_PT1 + '0') : (advertParams.AVATAR_SRC_PT1);
   avatarSrc += index + 1 + advertParams.AVATAR_SRC_PT2;
   var titleAdv = shuffleCopyArray(advertParams.TITLES)[index];
-  
+
   var advert = {
     author: {
       avatar: avatarSrc
@@ -127,13 +127,13 @@ var renderPin = function (advert) {
 
 var renderFeatures = function (advert, ulElement, liElements) {
   var features = advert.offer.features;
- 
+
   var cloneElement = liElements[0].cloneNode(true);
-  cloneElement.classList.remove('popup__feature--wifi')
-  for (var i = 0; i < liElements.length; i++ ) {
+  cloneElement.classList.remove('popup__feature--wifi');
+  for (var i = 0; i < liElements.length; i++) {
     ulElement.removeChild(liElements[i]);
   }
-  for (var i = 0; i < features.length; i++) {
+  for (i = 0; i < features.length; i++) {
     var featureElement = cloneElement.cloneNode(true);
     var featureClass = 'popup__feature--' + features[i];
     featureElement.classList.add(featureClass);
@@ -166,7 +166,7 @@ var renderAdv = function (advert) {
   var ulElement = advElement.querySelector('.popup__features');
   var liElements = ulElement.querySelectorAll('.popup__feature');
   renderFeatures(advert, ulElement, liElements);
-  
+
   var imgContainer = advElement.querySelector('.popup__photos');
   var imgMaster = advElement.querySelector('.popup__photo');
   getPhotos(advert, imgContainer, imgMaster);
