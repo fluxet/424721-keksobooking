@@ -98,7 +98,7 @@ var getSrc = function (avatarNumber) {
 var getAdvert = function (index) {
   var locationX = getRandomValue(markerParams.X_MIN, markerParams.X_MAX);
   var locationY = getRandomValue(markerParams.Y_MIN, markerParams.Y_MAX);
-  
+
   var avatarNumber = index + 1;
   var avatarSrc = getSrc(avatarNumber);
   var titleAdv = shuffleCopyArray(advertParams.TITLES)[index];
