@@ -1,8 +1,8 @@
 'use strict';
 
 var advertParams = {
-  AVATAR_SRC_PT1: 'img/avatars/user',
-  AVATAR_SRC_PT2: '.png',
+  AVATAR_SRC_PATH: 'img/avatars/user',
+  AVATAR_SRC_EXT: '.png',
   TITLES: [
     'Большая уютная квартира',
     'Маленькая неуютная квартира',
@@ -89,17 +89,18 @@ var getType = function (string) {
   return type;
 };
 
-var getSrc = function (index) {
-  var src = (index < 9) ? (advertParams.AVATAR_SRC_PT1 + '0') : (advertParams.AVATAR_SRC_PT1);
-  src += index + 1 + advertParams.AVATAR_SRC_PT2;
+var getSrc = function (avatarNumber) {
+  var src = (avatarNumber < 10) ? (advertParams.AVATAR_SRC_PATH + '0') : (advertParams.AVATAR_SRC_PATH);
+  src += avatarNumber + advertParams.AVATAR_SRC_EXT;
   return src;
 };
 
 var getAdvert = function (index) {
   var locationX = getRandomValue(markerParams.X_MIN, markerParams.X_MAX);
   var locationY = getRandomValue(markerParams.Y_MIN, markerParams.Y_MAX);
-
-  var avatarSrc = getSrc(index);
+  
+  var avatarNumber = index + 1;
+  var avatarSrc = getSrc(avatarNumber);
   var titleAdv = shuffleCopyArray(advertParams.TITLES)[index];
 
   var advert = {
@@ -148,19 +149,18 @@ var renderPin = function (advert) {
 var getFeature = function (feature) {
   var featureElement = document.createElement('li');
   featureElement.classList.add('popup__feature');
-  var featureClass = 'popup__feature--' + feature;
-  featureElement.classList.add(featureClass);
+  featureElement.classList.add('popup__feature--' + feature);
   return featureElement;
 };
 
-var getPhoto = function (photo) {
-  var imgNew = document.createElement('img');
-  imgNew.classList.add('popup__photo');
-  imgNew.src = photo;
-  imgNew.width = advertParams.PHOTO_WIDTH;
-  imgNew.height = advertParams.PHOTO_HEIGHT;
-  imgNew.alt = 'Фотография жилья';
-  return imgNew;
+var getPhoto = function (photoSrc) {
+  var img = document.createElement('img');
+  img.classList.add('popup__photo');
+  img.src = photoSrc;
+  img.width = advertParams.PHOTO_WIDTH;
+  img.height = advertParams.PHOTO_HEIGHT;
+  img.alt = 'Фотография жилья';
+  return img;
 };
 
 var renderAdv = function (advert) {
@@ -176,18 +176,12 @@ var renderAdv = function (advert) {
   advElement.querySelector('.popup__avatar').src = advert.author.avatar;
 
   var ulElement = advElement.querySelector('.popup__features');
-  var liElements = ulElement.querySelectorAll('.popup__feature');
-  for (var i = 0; i < liElements.length; i++) {
-    ulElement.removeChild(liElements[i]);
-  }
-  for (i = 0; i < advert.offer.features.length; i++) {
+  for (var i = 0; i < advert.offer.features.length; i++) {
     var featureElement = getFeature(advert.offer.features[i]);
     ulElement.appendChild(featureElement);
   }
 
   var imgContainer = advElement.querySelector('.popup__photos');
-  var imgMaster = advElement.querySelector('.popup__photo');
-  imgContainer.removeChild(imgMaster);
   for (i = 0; i < advert.offer.photos.length; i++) {
     var imgNew = getPhoto(advert.offer.photos[i]);
     imgContainer.appendChild(imgNew);
