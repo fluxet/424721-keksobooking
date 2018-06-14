@@ -93,7 +93,7 @@ var getSrc = function (index) {
   var src = (index < 9) ? (advertParams.AVATAR_SRC_PT1 + '0') : (advertParams.AVATAR_SRC_PT1);
   src += index + 1 + advertParams.AVATAR_SRC_PT2;
   return src;
-}
+};
 
 var getAdvert = function (index) {
   var locationX = getRandomValue(markerParams.X_MIN, markerParams.X_MAX);
@@ -150,8 +150,8 @@ var getFeature = function (feature) {
   featureElement.classList.add('popup__feature');
   var featureClass = 'popup__feature--' + feature;
   featureElement.classList.add(featureClass);
-  return featureElement
-}
+  return featureElement;
+};
 
 var getPhoto = function (photo) {
   var imgNew = document.createElement('img');
@@ -159,9 +159,9 @@ var getPhoto = function (photo) {
   imgNew.src = photo;
   imgNew.width = advertParams.PHOTO_WIDTH;
   imgNew.height = advertParams.PHOTO_HEIGHT;
-  imgNew.alt = "Фотография жилья";
+  imgNew.alt = 'Фотография жилья';
   return imgNew;
-}
+};
 
 var renderAdv = function (advert) {
   var advElement = similarAdvTemplate.cloneNode(true);
@@ -188,7 +188,7 @@ var renderAdv = function (advert) {
   var imgContainer = advElement.querySelector('.popup__photos');
   var imgMaster = advElement.querySelector('.popup__photo');
   imgContainer.removeChild(imgMaster);
-  for (var i = 0; i < advert.offer.photos.length; i++) {
+  for (i = 0; i < advert.offer.photos.length; i++) {
     var imgNew = getPhoto(advert.offer.photos[i]);
     imgContainer.appendChild(imgNew);
   }
@@ -205,7 +205,7 @@ var getPinsFragment = function (adverts) {
 
 var initPage = function () {
   mapElement.classList.remove('map--faded');
-  
+
   var adverts = getAdverts();
   mapElement.insertBefore(renderAdv(adverts[0]), nextElement);
   pinsContainer.appendChild(getPinsFragment(adverts));
