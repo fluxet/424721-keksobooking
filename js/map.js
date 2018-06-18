@@ -65,7 +65,7 @@ var filters = document.querySelectorAll('.map__filters select');
 var noticeForm = document.querySelector('.ad-form');
 var addressInput = document.querySelector('#address');
 var pinMain = document.querySelector('.map__pin--main');
-var popup;
+var advertCard;
 
 var getRandomValue = function (min, max) {
   return Math.floor(Math.random() * (max + 1 - min)) + min;
@@ -178,6 +178,15 @@ var getPhoto = function (photoSrc) {
   return img;
 };
 
+var closeAdv = function (advElement) {
+	var advButtonClose = advElement.querySelector('.popup__close');
+  advButtonClose.addEventListener('click', function () {
+    mapElement.removeChild(advElement);
+		advElement = null;
+    document.removeEventListener('keydown', onPopupEscPress);
+  });
+};
+
 var renderAdv = function (advert) {
   var advElement = similarAdvTemplate.cloneNode(true);
 
@@ -201,55 +210,61 @@ var renderAdv = function (advert) {
     var imgNew = getPhoto(advert.offer.photos[i]);
     imgContainer.appendChild(imgNew);
   }
-
-  var advClose = advElement.querySelector('.popup__close');
-  advClose.addEventListener('click', function () {
-    mapElement.removeChild(advElement);
-    document.removeEventListener('keydown', onPopupEscPress);
-  });
+	var popupElement = advElement;
+	
+  closeAdv(advElement);
   return advElement;
 };
 
 var openPin = function (advElement) {
   mapElement.insertBefore(advElement, filtersContainer);
+	advertCard = advElement;
   document.addEventListener('keydown', onPopupEscPress);
 };
 
-var getCoords = function (elem) {
-  var box = elem.getBoundingClientRect();
-  return {
-    top: box.top + pageYOffset,
-    left: box.left + pageXOffset
-  };
+var getCoords = function () {
+	var left = pinMain.offsetLeft;
+	var top = pinMain.offsetTop;
+	var coords = {
+		x: left + Math.round(mainPinParams.WIDTH / 2),
+		y: top +  mainPinParams.HEIGHT
+	}
+  return coords;
 };
 
-var setAdress = function (pinElement) {
-  var pinCoord = getCoords(pinElement);
-  var addressX = pinCoord.left + Math.round(mainPinParams.WIDTH / 2);
-  var addressY = pinCoord.top + mainPinParams.HEIGHT;
+var setAdress = function () {
+  var pinCoord = getCoords();
+  var addressX = pinCoord.x;
+  var addressY = pinCoord.y;
 
   addressInput.value = addressX + ', ' + addressY;
 };
 
 var onPopupEscPress = function (evt) {
   if (evt.keyCode === ESC_KEYCODE) {
-    popup = mapElement.querySelector('.map__card');
-    mapElement.removeChild(popup);
+    mapElement.removeChild(advertCard);
+		advertCard = null;
     document.removeEventListener('keydown', onPopupEscPress);
   }
 };
 
 var initPins = function () {
-  var fragmentAdv = document.createDocumentFragment();
+  var fragmentPin = document.createDocumentFragment();
   for (var i = 0; i < adverts.length; i++) {
-    fragmentAdv.appendChild(renderPin(adverts[i]));
+    fragmentPin.appendChild(renderPin(adverts[i]));
   }
-  pinsContainer.appendChild(fragmentAdv);
+  pinsContainer.appendChild(fragmentPin);
 };
 
-var toggleElementsDisable = function (elements, isDisable) {
+var disableElements = function (elements) {
   for (var i = 0; i < elements.length; i++) {
-    elements[i].disabled = isDisable;
+    elements[i].disabled = true;
+  }
+};
+
+var enableElements = function (elements) {
+  for (var i = 0; i < elements.length; i++) {
+    elements[i].disabled = false;
   }
 };
 
@@ -260,11 +275,10 @@ var onMainPinInitPage = function () {
 
     initPins();
 
-    var isDisable = false;
-    toggleElementsDisable(fieldsets, isDisable);
-    toggleElementsDisable(filters, isDisable);
+    enableElements(fieldsets);
+    enableElements(filters);
 
-    setAdress(pinMain);
+    setAdress();
   }
   pageActivated = true;
 };
@@ -272,9 +286,8 @@ var onMainPinInitPage = function () {
 var adverts = getAdverts();
 var pageActivated = false;
 
-var isDisable = true;
-toggleElementsDisable(fieldsets, isDisable);
-toggleElementsDisable(filters, isDisable);
+disableElements(fieldsets);
+disableElements(filters);
 
 pinMain.addEventListener('mouseup', function () {
   onMainPinInitPage();

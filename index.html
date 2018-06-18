@@ -35,7 +35,7 @@
 
       <div class="map__filters-container">
         <form action="#" class="map__filters" autocomplete="off">
-          <select name="housing-type" id="housing-type" class="map__filter" >
+          <select name="housing-type" id="housing-type" class="map__filter">
             <option value="any" selected>Любой тип жилья</option>
             <option value="palace">Дворец</option>
             <option value="flat">Квартира</option>
@@ -43,21 +43,21 @@
             <option value="bungalo">Бунгало</option>
           </select>
 
-          <select name="housing-price" id="housing-price" class="map__filter" >
+          <select name="housing-price" id="housing-price" class="map__filter">
             <option value="any" selected>Любая</option>
             <option value="middle">10000 - 50000&#x20bd;</option>
             <option value="low">до 10000&#x20bd;</option>
             <option value="high">от 50000&#x20bd;</option>
           </select>
 
-          <select name="housing-rooms" id="housing-rooms" class="map__filter" >
+          <select name="housing-rooms" id="housing-rooms" class="map__filter">
             <option value="any" selected>Любое число комнат</option>
             <option value="1">Одна комната</option>
             <option value="2">Две комнаты</option>
             <option value="3">Три комнаты</option>
           </select>
 
-          <select name="housing-guests" id="housing-guests" class="map__filter" >
+          <select name="housing-guests" id="housing-guests" class="map__filter">
             <option value="any" selected>Любое число гостей</option>
             <option value="2">Два гостя</option>
             <option value="1">Один гость</option>
@@ -105,17 +105,17 @@
           </div>
         </fieldset>
 
-        <fieldset class="ad-form__element ad-form__element--wide" >
+        <fieldset class="ad-form__element ad-form__element--wide">
           <label class="ad-form__label" for="title">Заголовок объявления</label>
           <input id="title" name="title" type="text" placeholder="Милая, уютная квартирка в центре Токио" minlength="30" maxlength="100" required>
         </fieldset>
 
-        <fieldset class="ad-form__element ad-form__element--wide" >
+        <fieldset class="ad-form__element ad-form__element--wide">
           <label class="ad-form__label" for="address">Адрес</label>
           <input id="address" name="address" type="text">
         </fieldset>
 
-        <fieldset class="ad-form__element" >
+        <fieldset class="ad-form__element">
           <label class="ad-form__label" for="type">Тип жилья</label>
           <select id="type" name="type">
             <option value="bungalo">Бунгало</option>
@@ -125,12 +125,12 @@
           </select>
         </fieldset>
 
-        <fieldset class="ad-form__element" >
+        <fieldset class="ad-form__element">
           <label class="ad-form__label" for="price">Цена за ночь, руб.</label>
           <input id="price" name="price" type="number" placeholder="5000" min="0" max="1000000">
         </fieldset>
 
-        <fieldset class="ad-form__element ad-form__element--time" >
+        <fieldset class="ad-form__element ad-form__element--time">
           <label class="ad-form__label" for="timein">Время заезда и выезда</label>
           <select id="timein" name="timein">
             <option value="12:00" selected>После 12</option>
@@ -144,7 +144,7 @@
           </select>
         </fieldset>
 
-        <fieldset class="ad-form__element" >
+        <fieldset class="ad-form__element">
           <label class="ad-form__label" for="room_number">Кол-во комнат</label>
           <select id="room_number" name="rooms">
             <option value="1" selected>1 комната</option>
@@ -154,7 +154,7 @@
           </select>
         </fieldset>
 
-        <fieldset class="ad-form__element" >
+        <fieldset class="ad-form__element">
           <label class="ad-form__label" for="capacity">Количество мест</label>
           <select id="capacity" name="capacity">
             <option value="3" selected>для 3 гостей</option>
@@ -164,7 +164,7 @@
           </select>
         </fieldset>
 
-        <fieldset class="ad-form__element ad-form__element--wide features" >
+        <fieldset class="ad-form__element ad-form__element--wide features">
           <legend>Удобства: Wi-Fi, кухня, парковка, стиралка, лифт, кондиционер</legend>
 
           <input type="checkbox" name="features" value="wifi" id="feature-wifi" class="feature__checkbox visually-hidden">
@@ -186,12 +186,12 @@
           <label class="feature feature--conditioner" for="feature-conditioner">Кондиционер</label>
         </fieldset>
 
-        <fieldset class="ad-form__element ad-form__element--wide" >
+        <fieldset class="ad-form__element ad-form__element--wide">
           <label class="ad-form__label" for="description">Описание (не обязательно)</label>
           <textarea id="description" name="description" placeholder="Здесь расскажите о том, какое ваше жилье замечательное и вообще"></textarea>
         </fieldset>
 
-        <fieldset class="ad-form__element ad-form__element--wide" >
+        <fieldset class="ad-form__element ad-form__element--wide">
           <label class="ad-form__label">Фотографии жилья</label>
           <div class="ad-form__photo-container">
             <div class="ad-form__upload">
@@ -202,7 +202,7 @@
           </div>
         </fieldset>
 
-        <fieldset class="ad-form__element ad-form__element--submit" >
+        <fieldset class="ad-form__element ad-form__element--submit">
           <button class="ad-form__submit" type="submit">Опубликовать</button>
           или <button class="ad-form__reset" type="reset">очистить</button>
         </fieldset>
