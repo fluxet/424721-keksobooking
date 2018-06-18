@@ -150,13 +150,13 @@ var getAdverts = function () {
 
 var renderPin = function (advert) {
   var pinElement = similarPinTemplate.cloneNode(true);
-  var advElement = renderAdv(advert);
+  var adElement = renderAdv(advert);
   pinElement.style.left = advert.location.x - markerParams.WIDTH / 2 + 'px';
   pinElement.style.top = advert.location.y - markerParams.HEIGHT + 'px';
   pinElement.querySelector('img').src = advert.author.avatar;
   pinElement.querySelector('img').alt = advert.offer.title;
   pinElement.addEventListener('click', function () {
-    openPin(advElement);
+    openCard(adElement);
   });
   return pinElement;
 };
@@ -178,45 +178,45 @@ var getPhoto = function (photoSrc) {
   return img;
 };
 
-var closeAdv = function (advElement) {
-  var advButtonClose = advElement.querySelector('.popup__close');
+var closeAd = function (adElement) {
+  var advButtonClose = adElement.querySelector('.popup__close');
   advButtonClose.addEventListener('click', function () {
-    mapElement.removeChild(advElement);
-    advElement = null;
+    mapElement.removeChild(adElement);
+    adElement = null;
     document.removeEventListener('keydown', onPopupEscPress);
   });
 };
 
 var renderAdv = function (advert) {
-  var advElement = similarAdvTemplate.cloneNode(true);
+  var adElement = similarAdvTemplate.cloneNode(true);
 
-  advElement.querySelector('.popup__title').textContent = advert.offer.title;
-  advElement.querySelector('.popup__text--address').textContent = advert.offer.address;
-  advElement.querySelector('.popup__text--price').textContent = advert.offer.price + '₽/ночь';
-  advElement.querySelector('.popup__type').textContent = advertTitleTranslation[advert.offer.type];
-  advElement.querySelector('.popup__text--capacity').textContent = advert.offer.rooms + ' комнаты для ' + advert.offer.guests + ' гостей';
-  advElement.querySelector('.popup__text--time').textContent = 'Заезд после ' + advert.offer.checkin + ', выезд до ' + advert.offer.checkout;
-  advElement.querySelector('.popup__description').textContent = advert.offer.description;
-  advElement.querySelector('.popup__avatar').src = advert.author.avatar;
+  adElement.querySelector('.popup__title').textContent = advert.offer.title;
+  adElement.querySelector('.popup__text--address').textContent = advert.offer.address;
+  adElement.querySelector('.popup__text--price').textContent = advert.offer.price + '₽/ночь';
+  adElement.querySelector('.popup__type').textContent = advertTitleTranslation[advert.offer.type];
+  adElement.querySelector('.popup__text--capacity').textContent = advert.offer.rooms + ' комнаты для ' + advert.offer.guests + ' гостей';
+  adElement.querySelector('.popup__text--time').textContent = 'Заезд после ' + advert.offer.checkin + ', выезд до ' + advert.offer.checkout;
+  adElement.querySelector('.popup__description').textContent = advert.offer.description;
+  adElement.querySelector('.popup__avatar').src = advert.author.avatar;
 
-  var ulElement = advElement.querySelector('.popup__features');
+  var ulElement = adElement.querySelector('.popup__features');
   for (var i = 0; i < advert.offer.features.length; i++) {
     var featureElement = getFeature(advert.offer.features[i]);
     ulElement.appendChild(featureElement);
   }
 
-  var imgContainer = advElement.querySelector('.popup__photos');
+  var imgContainer = adElement.querySelector('.popup__photos');
   for (i = 0; i < advert.offer.photos.length; i++) {
     var imgNew = getPhoto(advert.offer.photos[i]);
     imgContainer.appendChild(imgNew);
   }
-  closeAdv(advElement);
-  return advElement;
+  closeAd(adElement);
+  return adElement;
 };
 
-var openPin = function (advElement) {
-  mapElement.insertBefore(advElement, filtersContainer);
-  advertCard = advElement;
+var openCard = function (adElement) {
+  mapElement.insertBefore(adElement, filtersContainer);
+  advertCard = adElement;
   document.addEventListener('keydown', onPopupEscPress);
 };
 
@@ -232,10 +232,7 @@ var getCoords = function () {
 
 var setAdress = function () {
   var pinCoord = getCoords();
-  var addressX = pinCoord.x;
-  var addressY = pinCoord.y;
-
-  addressInput.value = addressX + ', ' + addressY;
+  addressInput.value = pinCoord.x + ', ' + pinCoord.y;
 };
 
 var onPopupEscPress = function (evt) {
