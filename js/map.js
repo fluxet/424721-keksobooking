@@ -156,8 +156,8 @@ var renderPin = function (advert) {
   pinElement.querySelector('img').src = advert.author.avatar;
   pinElement.querySelector('img').alt = advert.offer.title;
   pinElement.addEventListener('click', function () {
-      openPin(advElement);
-    });
+    openPin(advElement);
+  });
   return pinElement;
 };
 
@@ -210,12 +210,12 @@ var renderAdv = function (advert) {
   return advElement;
 };
 
-var openPin = function (advElement) {  
+var openPin = function (advElement) {
   mapElement.insertBefore(advElement, filtersContainer);
   document.addEventListener('keydown', onPopupEscPress);
 };
 
-var getCoords = function (elem) { 
+var getCoords = function (elem) {
   var box = elem.getBoundingClientRect();
   return {
     top: box.top + pageYOffset,
@@ -227,7 +227,7 @@ var setAdress = function (pinElement) {
   var pinCoord = getCoords(pinElement);
   var addressX = pinCoord.left + Math.round(mainPinParams.WIDTH / 2);
   var addressY = pinCoord.top + mainPinParams.HEIGHT;
-  
+
   addressInput.value = addressX + ', ' + addressY;
 };
 
@@ -247,7 +247,7 @@ var initPins = function () {
   pinsContainer.appendChild(fragmentAdv);
 };
 
-var toggleElementsDisable = function(elements, isDisable) {
+var toggleElementsDisable = function (elements, isDisable) {
   for (var i = 0; i < elements.length; i++) {
     elements[i].disabled = isDisable;
   }
@@ -263,7 +263,7 @@ var onMainPinInitPage = function () {
     var isDisable = false;
     toggleElementsDisable(fieldsets, isDisable);
     toggleElementsDisable(filters, isDisable);
-    
+
     setAdress(pinMain);
   }
   pageActivated = true;
