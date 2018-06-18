@@ -37,8 +37,9 @@ var markerParams = {
 };
 var mainPinParams = {
   WIDTH: 65,
-  HEIGHT: 65
+  HEIGHT: 87
 };
+var ESC_KEYCODE = 27;
 var offerTypesTranslation = {
   'квартира': 'flat',
   'дворец': 'palace',
@@ -54,7 +55,7 @@ var advertTitleTranslation = {
 
 var mapElement = document.querySelector('.map');
 var pinsContainer = mapElement.querySelector('.map__pins');
-var nextElement = mapElement.querySelector('.map__filters-container');
+var filtersContainer = mapElement.querySelector('.map__filters-container');
 var template = document.querySelector('template');
 var similarPinTemplate = template.content.querySelector('.map__pin');
 var similarAdvTemplate = template.content.querySelector('.map__card');
@@ -64,6 +65,7 @@ var filters = document.querySelectorAll('.map__filters select');
 var noticeForm = document.querySelector('.ad-form');
 var addressInput = document.querySelector('#address');
 var pinMain = document.querySelector('.map__pin--main');
+var popup;
 
 var getRandomValue = function (min, max) {
   return Math.floor(Math.random() * (max + 1 - min)) + min;
@@ -148,11 +150,14 @@ var getAdverts = function () {
 
 var renderPin = function (advert) {
   var pinElement = similarPinTemplate.cloneNode(true);
-
+  var advElement = renderAdv(advert);
   pinElement.style.left = advert.location.x - markerParams.WIDTH / 2 + 'px';
   pinElement.style.top = advert.location.y - markerParams.HEIGHT + 'px';
   pinElement.querySelector('img').src = advert.author.avatar;
   pinElement.querySelector('img').alt = advert.offer.title;
+  pinElement.addEventListener('click', function () {
+      openPin(advElement);
+    });
   return pinElement;
 };
 
@@ -200,94 +205,77 @@ var renderAdv = function (advert) {
   var advClose = advElement.querySelector('.popup__close');
   advClose.addEventListener('click', function () {
     mapElement.removeChild(advElement);
+    document.removeEventListener('keydown', onPopupEscPress);
   });
-
   return advElement;
 };
 
-var getPinsFragment = function (adverts) {
-  var fragment = document.createDocumentFragment();
-  for (var i = 0; i < adverts.length; i++) {
-    fragment.appendChild(renderPin(adverts[i], i + 1));
-  }
-  return fragment;
-};
-
-var writeAdress = function (pinElement) {
-  var addressX = +pinElement.style.left.match(/\d{3}/)[0] + Math.round(mainPinParams.WIDTH / 2);
-  var addressY = +pinElement.style.top.match(/\d{3}/)[0] + mainPinParams.HEIGHT;
-  addressInput.value = addressX + ', ' + addressY;
-};
-
-var openPin = function (advElement) {
-  var onPopupEscPress = function (evt) {
-    if (evt.keyCode === 27) {
-      mapElement.removeChild(advElement);
-      document.removeEventListener('keydown', onPopupEscPress);
-    }
-  };
-  mapElement.insertBefore(advElement, nextElement);
+var openPin = function (advElement) {  
+  mapElement.insertBefore(advElement, filtersContainer);
   document.addEventListener('keydown', onPopupEscPress);
 };
 
-var initPins = function () {
-  pinsContainer.appendChild(getPinsFragment(adverts));
-  var pins = document.querySelectorAll('.map__pin');
+var getCoords = function (elem) { 
+  var box = elem.getBoundingClientRect();
+  return {
+    top: box.top + pageYOffset,
+    left: box.left + pageXOffset
+  };
+};
 
-  pins[1].addEventListener('click', function () {
-    var advElement = renderAdv(adverts[0]);
-    openPin(advElement);
-  });
-  pins[2].addEventListener('click', function () {
-    var advElement = renderAdv(adverts[1]);
-    openPin(advElement);
-  });
-  pins[3].addEventListener('click', function () {
-    var advElement = renderAdv(adverts[2]);
-    openPin(advElement);
-  });
-  pins[4].addEventListener('click', function () {
-    var advElement = renderAdv(adverts[3]);
-    openPin(advElement);
-  });
-  pins[5].addEventListener('click', function () {
-    var advElement = renderAdv(adverts[4]);
-    openPin(advElement);
-  });
-  pins[6].addEventListener('click', function () {
-    var advElement = renderAdv(adverts[5]);
-    openPin(advElement);
-  });
-  pins[7].addEventListener('click', function () {
-    var advElement = renderAdv(adverts[6]);
-    openPin(advElement);
-  });
-  pins[8].addEventListener('click', function () {
-    var advElement = renderAdv(adverts[7]);
-    openPin(advElement);
-  });
+var setAdress = function (pinElement) {
+  var pinCoord = getCoords(pinElement);
+  var addressX = pinCoord.left + Math.round(mainPinParams.WIDTH / 2);
+  var addressY = pinCoord.top + mainPinParams.HEIGHT;
+  
+  addressInput.value = addressX + ', ' + addressY;
+};
+
+var onPopupEscPress = function (evt) {
+  if (evt.keyCode === ESC_KEYCODE) {
+    popup = mapElement.querySelector('.map__card');
+    mapElement.removeChild(popup);
+    document.removeEventListener('keydown', onPopupEscPress);
+  }
+};
+
+var initPins = function () {
+  var fragmentAdv = document.createDocumentFragment();
+  for (var i = 0; i < adverts.length; i++) {
+    fragmentAdv.appendChild(renderPin(adverts[i]));
+  }
+  pinsContainer.appendChild(fragmentAdv);
+};
+
+var toggleElementsDisable = function(elements, isDisable) {
+  for (var i = 0; i < elements.length; i++) {
+    elements[i].disabled = isDisable;
+  }
 };
 
 var onMainPinInitPage = function () {
-  if (flagFirstMove) {
+  if (!pageActivated) {
     mapElement.classList.remove('map--faded');
     noticeForm.classList.remove('ad-form--disabled');
 
     initPins();
 
-    for (var i = 0; i < fieldsets.length; i++) {
-      fieldsets[i].disabled = false;
-    }
-    for (i = 0; i < filters.length; i++) {
-      filters[i].disabled = false;
-    }
-    writeAdress(pinMain);
+    var isDisable = false;
+    toggleElementsDisable(fieldsets, isDisable);
+    toggleElementsDisable(filters, isDisable);
+    
+    setAdress(pinMain);
   }
-  flagFirstMove = false;
+  pageActivated = true;
 };
 
 var adverts = getAdverts();
-var flagFirstMove = true;
+var pageActivated = false;
+
+var isDisable = true;
+toggleElementsDisable(fieldsets, isDisable);
+toggleElementsDisable(filters, isDisable);
+
 pinMain.addEventListener('mouseup', function () {
   onMainPinInitPage();
 });
