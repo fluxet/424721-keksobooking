@@ -179,10 +179,10 @@ var getPhoto = function (photoSrc) {
 };
 
 var closeAdv = function (advElement) {
-	var advButtonClose = advElement.querySelector('.popup__close');
+  var advButtonClose = advElement.querySelector('.popup__close');
   advButtonClose.addEventListener('click', function () {
     mapElement.removeChild(advElement);
-		advElement = null;
+    advElement = null;
     document.removeEventListener('keydown', onPopupEscPress);
   });
 };
@@ -210,25 +210,23 @@ var renderAdv = function (advert) {
     var imgNew = getPhoto(advert.offer.photos[i]);
     imgContainer.appendChild(imgNew);
   }
-	var popupElement = advElement;
-	
   closeAdv(advElement);
   return advElement;
 };
 
 var openPin = function (advElement) {
   mapElement.insertBefore(advElement, filtersContainer);
-	advertCard = advElement;
+  advertCard = advElement;
   document.addEventListener('keydown', onPopupEscPress);
 };
 
 var getCoords = function () {
-	var left = pinMain.offsetLeft;
-	var top = pinMain.offsetTop;
-	var coords = {
-		x: left + Math.round(mainPinParams.WIDTH / 2),
-		y: top +  mainPinParams.HEIGHT
-	}
+  var left = pinMain.offsetLeft;
+  var top = pinMain.offsetTop;
+  var coords = {
+    x: left + Math.round(mainPinParams.WIDTH / 2),
+    y: top + mainPinParams.HEIGHT
+  };
   return coords;
 };
 
@@ -243,7 +241,7 @@ var setAdress = function () {
 var onPopupEscPress = function (evt) {
   if (evt.keyCode === ESC_KEYCODE) {
     mapElement.removeChild(advertCard);
-		advertCard = null;
+    advertCard = null;
     document.removeEventListener('keydown', onPopupEscPress);
   }
 };
