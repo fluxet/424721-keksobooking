@@ -78,13 +78,13 @@ var roomNumberSelect = document.querySelector('#room_number');
 var capacitySelect = document.querySelector('#capacity');
 var submitButton = document.querySelector('.ad-form__element--submit');
 var timeErrorMessage = 'Время заезда должно совпадать с временем выезда';
-var guestsErrorMessage = 'Выбрано недопудопустимое количество гостей. Допустимые варианты выбора количества гостей: 1 комната — для 1 гостя; 2 комнаты — для 2 гостей или для 1 гостя; 3 комнаты — для 3 гостей, для 2 гостей или для 1 гостя; 100 комнат — не для гостей;'
+var guestsErrorMessage = 'Выбрано недопудопустимое количество гостей. Допустимые варианты выбора количества гостей: 1 комната — для 1 гостя; 2 комнаты — для 2 гостей или для 1 гостя; 3 комнаты — для 3 гостей, для 2 гостей или для 1 гостя; 100 комнат — не для гостей;';
 var minPriceTranslator = {
   bungalo: 0,
   flat: 1000,
   house: 5000,
   palace: 10000
-}
+};
 
 var getRandomValue = function (min, max) {
   return Math.floor(Math.random() * (max + 1 - min)) + min;
@@ -314,36 +314,36 @@ typeSelect.addEventListener('focusout', function () {
   priceInput.placeholder = priceInput.min;
 });
 timeInSelect.addEventListener('focusout', function () {
-  if (timeInSelect.value != timeOutSelect.value) {
+  if (timeInSelect.value !== timeOutSelect.value) {
     timeOutSelect.setCustomValidity(timeErrorMessage);
   }
   timeInSelect.setCustomValidity('');
 });
 timeOutSelect.addEventListener('focusout', function () {
-  if (timeInSelect.value != timeOutSelect.value) {
+  if (timeInSelect.value !== timeOutSelect.value) {
     timeInSelect.setCustomValidity(timeErrorMessage);
   }
   timeOutSelect.setCustomValidity('');
 });
 
-var onSubmitCapacityValidate = function (evt) {
+var onSubmitCapacityValidate = function () {
   capacitySelect.setCustomValidity('');
-  if ((roomNumberSelect.value == '1') && (capacitySelect.value != '1')) {
+  if ((roomNumberSelect.value === '1') && (capacitySelect.value !== '1')) {
     capacitySelect.setCustomValidity(guestsErrorMessage);
   }
-  if ((roomNumberSelect.value == '2') && !((capacitySelect.value == '1') || (capacitySelect.value == '2'))) {
+  if ((roomNumberSelect.value === '2') && !((capacitySelect.value === '1') || (capacitySelect.value === '2'))) {
     capacitySelect.setCustomValidity(guestsErrorMessage);
   }
-  if ((roomNumberSelect.value == '3') && (capacitySelect.value == '0')) {
+  if ((roomNumberSelect.value === '3') && (capacitySelect.value === '0')) {
     capacitySelect.setCustomValidity(guestsErrorMessage);
   }
-  if ((roomNumberSelect.value == '100') && (capacitySelect.value != '0')) {
+  if ((roomNumberSelect.value === '100') && (capacitySelect.value !== '0')) {
     capacitySelect.setCustomValidity(guestsErrorMessage);
   }
 };
 
 submitButton.addEventListener('click', onSubmitCapacityValidate);
-submitButton.addEventListener('keydown',function (evt) {
+submitButton.addEventListener('keydown', function (evt) {
   if (evt.keyCode === keycodes.ENTER) {
     onSubmitCapacityValidate;
   }
