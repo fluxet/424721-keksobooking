@@ -345,6 +345,6 @@ var onSubmitCapacityValidate = function () {
 submitButton.addEventListener('click', onSubmitCapacityValidate);
 submitButton.addEventListener('keydown', function (evt) {
   if (evt.keyCode === keycodes.ENTER) {
-    onSubmitCapacityValidate;
+    onSubmitCapacityValidate();
   }
 });
