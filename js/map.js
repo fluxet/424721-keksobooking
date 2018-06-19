@@ -39,7 +39,11 @@ var mainPinParams = {
   WIDTH: 65,
   HEIGHT: 87
 };
-var ESC_KEYCODE = 27;
+var keycodes = {
+  ENTER: 13,
+  ESC: 27
+};
+
 var offerTypesTranslation = {
   'квартира': 'flat',
   'дворец': 'palace',
@@ -66,6 +70,21 @@ var noticeForm = document.querySelector('.ad-form');
 var addressInput = document.querySelector('#address');
 var pinMain = document.querySelector('.map__pin--main');
 var advertCard;
+var typeSelect = document.querySelector('#type');
+var priceInput = document.querySelector('#price');
+var timeInSelect = document.querySelector('#timein');
+var timeOutSelect = document.querySelector('#timeout');
+var roomNumberSelect = document.querySelector('#room_number');
+var capacitySelect = document.querySelector('#capacity');
+var submitButton = document.querySelector('.ad-form__element--submit');
+var timeErrorMessage = 'Время заезда должно совпадать с временем выезда';
+var guestsErrorMessage = 'Выбрано недопудопустимое количество гостей. Допустимые варианты выбора количества гостей: 1 комната — для 1 гостя; 2 комнаты — для 2 гостей или для 1 гостя; 3 комнаты — для 3 гостей, для 2 гостей или для 1 гостя; 100 комнат — не для гостей;'
+var minPriceTranslator = {
+  bungalo: 0,
+  flat: 1000,
+  house: 5000,
+  palace: 10000
+}
 
 var getRandomValue = function (min, max) {
   return Math.floor(Math.random() * (max + 1 - min)) + min;
@@ -236,7 +255,7 @@ var setAdress = function () {
 };
 
 var onPopupEscPress = function (evt) {
-  if (evt.keyCode === ESC_KEYCODE) {
+  if (evt.keyCode === keycodes.ESC) {
     mapElement.removeChild(advertCard);
     advertCard = null;
     document.removeEventListener('keydown', onPopupEscPress);
@@ -286,4 +305,46 @@ disableElements(filters);
 
 pinMain.addEventListener('mouseup', function () {
   onMainPinInitPage();
+});
+
+addressInput.disabled = true;
+
+typeSelect.addEventListener('focusout', function () {
+  priceInput.min = minPriceTranslator[typeSelect.value];
+  priceInput.placeholder = priceInput.min;
+});
+timeInSelect.addEventListener('focusout', function () {
+  if (timeInSelect.value != timeOutSelect.value) {
+    timeOutSelect.setCustomValidity(timeErrorMessage);
+  }
+  timeInSelect.setCustomValidity('');
+});
+timeOutSelect.addEventListener('focusout', function () {
+  if (timeInSelect.value != timeOutSelect.value) {
+    timeInSelect.setCustomValidity(timeErrorMessage);
+  }
+  timeOutSelect.setCustomValidity('');
+});
+
+var onSubmitCapacityValidate = function (evt) {
+  capacitySelect.setCustomValidity('');
+  if ((roomNumberSelect.value == '1') && (capacitySelect.value != '1')) {
+    capacitySelect.setCustomValidity(guestsErrorMessage);
+  }
+  if ((roomNumberSelect.value == '2') && !((capacitySelect.value == '1') || (capacitySelect.value == '2'))) {
+    capacitySelect.setCustomValidity(guestsErrorMessage);
+  }
+  if ((roomNumberSelect.value == '3') && (capacitySelect.value == '0')) {
+    capacitySelect.setCustomValidity(guestsErrorMessage);
+  }
+  if ((roomNumberSelect.value == '100') && (capacitySelect.value != '0')) {
+    capacitySelect.setCustomValidity(guestsErrorMessage);
+  }
+};
+
+submitButton.addEventListener('click', onSubmitCapacityValidate);
+submitButton.addEventListener('keydown',function (evt) {
+  if (evt.keyCode === keycodes.ENTER) {
+    onSubmitCapacityValidate;
+  }
 });
