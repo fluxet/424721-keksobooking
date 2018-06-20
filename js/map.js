@@ -77,7 +77,6 @@ var timeOutSelect = document.querySelector('#timeout');
 var roomNumberSelect = document.querySelector('#room_number');
 var capacitySelect = document.querySelector('#capacity');
 var capacityOptions = capacitySelect.querySelectorAll('option');
-var submitButton = document.querySelector('.ad-form__element--submit');
 var minPriceIndicator = {
   bungalo: 0,
   flat: 1000,
@@ -313,7 +312,7 @@ var disableCapacityOptions = function () {
   }
   var enableOptions = capacityInRoomsVariants[roomNumberSelect.value];
   for (i = 0; i < enableOptions.length; i++) {
-    var selectorName = 'option[value=\''+ enableOptions[i] + '\']';
+    var selectorName = 'option[value=\'' + enableOptions[i] + '\']';
     capacitySelect.querySelector(selectorName).disabled = false;
   }
   capacitySelect.value = enableOptions[0];
@@ -324,7 +323,6 @@ var showInvalidElement = function (evt) {
   invalidElement.parentNode.classList.add('ad-form__element--invalid');
   invalidElement.addEventListener('change', function () {
     invalidElement.parentNode.classList.remove('ad-form__element--invalid');
-    
   });
 };
 
@@ -347,7 +345,7 @@ timeInSelect.addEventListener('change', function () {
   setTimeSelects(timeInSelect, timeOutSelect);
 });
 timeOutSelect.addEventListener('change', function () {
- setTimeSelects(timeOutSelect, timeInSelect);
+  setTimeSelects(timeOutSelect, timeInSelect);
 });
 
 roomNumberSelect.addEventListener('change', function () {
