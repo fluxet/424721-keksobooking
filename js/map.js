@@ -256,7 +256,6 @@ var getCoords = function () {
 var setAdress = function () {
   var pinCoord = getCoords();
   addressInput.value = pinCoord.x + ', ' + pinCoord.y;
-  console.log(addressInput);
 };
 
 var onPopupEscPress = function (evt) {
