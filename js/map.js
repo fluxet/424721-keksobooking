@@ -76,16 +76,20 @@ var timeInSelect = document.querySelector('#timein');
 var timeOutSelect = document.querySelector('#timeout');
 var roomNumberSelect = document.querySelector('#room_number');
 var capacitySelect = document.querySelector('#capacity');
+var capacityOptions = capacitySelect.querySelectorAll('option');
 var submitButton = document.querySelector('.ad-form__element--submit');
-var timeErrorMessage = 'Время заезда должно совпадать с временем выезда';
-var guestsErrorMessage = 'Выбрано недопудопустимое количество гостей. Допустимые варианты выбора количества гостей: 1 комната — для 1 гостя; 2 комнаты — для 2 гостей или для 1 гостя; 3 комнаты — для 3 гостей, для 2 гостей или для 1 гостя; 100 комнат — не для гостей;';
-var minPriceTranslator = {
+var minPriceIndicator = {
   bungalo: 0,
   flat: 1000,
   house: 5000,
   palace: 10000
 };
-
+var capacityInRoomsVariants = {
+  '1': ['1'],
+  '2': ['1', '2'],
+  '3': ['1', '2', '3'],
+  '100': ['0']
+};
 var getRandomValue = function (min, max) {
   return Math.floor(Math.random() * (max + 1 - min)) + min;
 };
@@ -252,6 +256,7 @@ var getCoords = function () {
 var setAdress = function () {
   var pinCoord = getCoords();
   addressInput.value = pinCoord.x + ', ' + pinCoord.y;
+  console.log(addressInput);
 };
 
 var onPopupEscPress = function (evt) {
@@ -297,6 +302,33 @@ var onMainPinInitPage = function () {
   pageActivated = true;
 };
 
+var setTimeSelects = function (masterElement, slaveElement) {
+  if (masterElement.value !== slaveElement.value) {
+    slaveElement.value = masterElement.value;
+  }
+};
+
+var disableCapacityOptions = function () {
+  for (var i = 0; i < capacityOptions.length; i++) {
+    capacityOptions[i].disabled = true;
+  }
+  var enableOptions = capacityInRoomsVariants[roomNumberSelect.value];
+  for (i = 0; i < enableOptions.length; i++) {
+    var selectorName = 'option[value=\''+ enableOptions[i] + '\']';
+    capacitySelect.querySelector(selectorName).disabled = false;
+  }
+  capacitySelect.value = enableOptions[0];
+};
+
+var showInvalidElement = function (evt) {
+  var invalidElement = evt.target;
+  invalidElement.parentNode.classList.add('ad-form__element--invalid');
+  invalidElement.addEventListener('change', function () {
+    invalidElement.parentNode.classList.remove('ad-form__element--invalid');
+    
+  });
+};
+
 var adverts = getAdverts();
 var pageActivated = false;
 
@@ -307,44 +339,20 @@ pinMain.addEventListener('mouseup', function () {
   onMainPinInitPage();
 });
 
-addressInput.disabled = true;
-
-typeSelect.addEventListener('focusout', function () {
-  priceInput.min = minPriceTranslator[typeSelect.value];
+typeSelect.addEventListener('change', function () {
+  priceInput.min = minPriceIndicator[typeSelect.value];
   priceInput.placeholder = priceInput.min;
 });
-timeInSelect.addEventListener('focusout', function () {
-  if (timeInSelect.value !== timeOutSelect.value) {
-    timeOutSelect.setCustomValidity(timeErrorMessage);
-  }
-  timeInSelect.setCustomValidity('');
+
+timeInSelect.addEventListener('change', function () {
+  setTimeSelects(timeInSelect, timeOutSelect);
 });
-timeOutSelect.addEventListener('focusout', function () {
-  if (timeInSelect.value !== timeOutSelect.value) {
-    timeInSelect.setCustomValidity(timeErrorMessage);
-  }
-  timeOutSelect.setCustomValidity('');
+timeOutSelect.addEventListener('change', function () {
+ setTimeSelects(timeOutSelect, timeInSelect);
 });
 
-var onSubmitCapacityValidate = function () {
-  capacitySelect.setCustomValidity('');
-  if ((roomNumberSelect.value === '1') && (capacitySelect.value !== '1')) {
-    capacitySelect.setCustomValidity(guestsErrorMessage);
-  }
-  if ((roomNumberSelect.value === '2') && !((capacitySelect.value === '1') || (capacitySelect.value === '2'))) {
-    capacitySelect.setCustomValidity(guestsErrorMessage);
-  }
-  if ((roomNumberSelect.value === '3') && (capacitySelect.value === '0')) {
-    capacitySelect.setCustomValidity(guestsErrorMessage);
-  }
-  if ((roomNumberSelect.value === '100') && (capacitySelect.value !== '0')) {
-    capacitySelect.setCustomValidity(guestsErrorMessage);
-  }
-};
-
-submitButton.addEventListener('click', onSubmitCapacityValidate);
-submitButton.addEventListener('keydown', function (evt) {
-  if (evt.keyCode === keycodes.ENTER) {
-    onSubmitCapacityValidate();
-  }
+roomNumberSelect.addEventListener('change', function () {
+  disableCapacityOptions();
 });
+
+noticeForm.addEventListener('invalid', showInvalidElement, true);
