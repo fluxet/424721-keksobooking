@@ -303,19 +303,19 @@ var onMainPinInitPage = function () {
 };
 
 var setTimeSelects = function (masterElement, slaveElement) {
-    slaveElement.value = masterElement.value;
+  slaveElement.value = masterElement.value;
 };
 
 var disableCapacityOptions = function () {
   var enableOptions = capacityInRoomsVariants[roomNumberSelect.value];
-    
-  capacityOptions.forEach(function(option) {
+
+  capacityOptions.forEach (function(option) {
     option.disabled = !enableOptions.includes(option.value);
   });
   capacitySelect.value = enableOptions[0];
 };
 
-var hideInvalidElement = function(element) {
+var hideInvalidElement = function (element) {
   element.addEventListener('change', function () {
     element.classList.remove('element-invalid');
   });
