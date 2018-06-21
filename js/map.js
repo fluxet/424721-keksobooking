@@ -77,6 +77,7 @@ var timeOutSelect = document.querySelector('#timeout');
 var roomNumberSelect = document.querySelector('#room_number');
 var capacitySelect = document.querySelector('#capacity');
 var capacityOptions = capacitySelect.querySelectorAll('option');
+var resetButton = noticeForm.querySelector('.ad-form__reset');
 var minPriceIndicator = {
   bungalo: 0,
   flat: 1000,
@@ -89,6 +90,7 @@ var capacityInRoomsVariants = {
   '3': ['1', '2', '3'],
   '100': ['0']
 };
+
 var getRandomValue = function (min, max) {
   return Math.floor(Math.random() * (max + 1 - min)) + min;
 };
@@ -301,29 +303,34 @@ var onMainPinInitPage = function () {
 };
 
 var setTimeSelects = function (masterElement, slaveElement) {
-  if (masterElement.value !== slaveElement.value) {
     slaveElement.value = masterElement.value;
-  }
 };
 
 var disableCapacityOptions = function () {
-  for (var i = 0; i < capacityOptions.length; i++) {
-    capacityOptions[i].disabled = true;
-  }
   var enableOptions = capacityInRoomsVariants[roomNumberSelect.value];
-  for (i = 0; i < enableOptions.length; i++) {
-    var selectorName = 'option[value=\'' + enableOptions[i] + '\']';
-    capacitySelect.querySelector(selectorName).disabled = false;
-  }
+    
+  capacityOptions.forEach(function(option) {
+    option.disabled = !enableOptions.includes(option.value);
+  });
   capacitySelect.value = enableOptions[0];
+};
+
+var hideInvalidElement = function(element) {
+  element.addEventListener('change', function () {
+    element.classList.remove('element-invalid');
+  });
 };
 
 var showInvalidElement = function (evt) {
   var invalidElement = evt.target;
-  invalidElement.parentNode.classList.add('ad-form__element--invalid');
-  invalidElement.addEventListener('change', function () {
-    invalidElement.parentNode.classList.remove('ad-form__element--invalid');
-  });
+  invalidElement.classList.add('element-invalid');
+  hideInvalidElement(invalidElement);
+};
+
+var onResetFormClear = function (evt) {
+  noticeForm.reset();
+  setAdress();
+  evt.preventDefault();
 };
 
 var adverts = getAdverts();
@@ -353,3 +360,5 @@ roomNumberSelect.addEventListener('change', function () {
 });
 
 noticeForm.addEventListener('invalid', showInvalidElement, true);
+
+resetButton.addEventListener('click', onResetFormClear);
