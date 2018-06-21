@@ -309,7 +309,7 @@ var setTimeSelects = function (masterElement, slaveElement) {
 var disableCapacityOptions = function () {
   var enableOptions = capacityInRoomsVariants[roomNumberSelect.value];
 
-  capacityOptions.forEach (function(option) {
+  capacityOptions.forEach(function (option) {
     option.disabled = !enableOptions.includes(option.value);
   });
   capacitySelect.value = enableOptions[0];
