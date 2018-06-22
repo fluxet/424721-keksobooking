@@ -63,7 +63,6 @@ var filtersContainer = mapElement.querySelector('.map__filters-container');
 var template = document.querySelector('template');
 var similarPinTemplate = template.content.querySelector('.map__pin');
 var similarAdvTemplate = template.content.querySelector('.map__card');
-var advertCard;
 var pins = [];
 var fieldsets = document.querySelectorAll('fieldset');
 var filters = document.querySelectorAll('.map__filters select');
@@ -196,8 +195,8 @@ var renderPin = function (advert) {
   pinElement.querySelector('img').src = advert.author.avatar;
   pinElement.querySelector('img').alt = advert.offer.title;
   pins.push(pinElement);
-  
-  pinElement.addEventListener('click', function () { 
+
+  pinElement.addEventListener('click', function () {
     closeCard();
     pinElement.classList.add('map__pin--active');
     openCard(adElement);
@@ -207,7 +206,6 @@ var renderPin = function (advert) {
 
 var openCard = function (adElement) {
   mapElement.insertBefore(adElement, filtersContainer);
-  advertCard = adElement;
   document.addEventListener('keydown', onPopupEscPress);
 };
 
