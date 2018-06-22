@@ -207,10 +207,10 @@ var getPhoto = function (photoSrc) {
 
 var closeAd = function () {
   for (var i = advertCards.length - 1; i >= 0; i--) {
-      mapElement.removeChild(advertCards[i]);
-      advertCards[i] = null;  
-      advertCards.pop();
-    } 
+    mapElement.removeChild(advertCards[i]);
+    advertCards[i] = null;
+    advertCards.pop();
+  }
 };
 
 var renderAdv = function (advert) {
@@ -264,7 +264,7 @@ var setAdress = function () {
 
 var onPopupEscPress = function (evt) {
   if (evt.keyCode === keycodes.ESC) {
-    closeAd();   
+    closeAd();
     document.removeEventListener('keydown', onPopupEscPress);
   }
 };
@@ -277,7 +277,7 @@ var initPins = function () {
   pinsContainer.appendChild(fragmentPin);
 };
 
-var closePins = function() {
+var closePins = function () {
   var pins = pinsContainer.querySelectorAll('.map__pin');
   for (var i = 1; i < pins.length; i++) {
     pinsContainer.removeChild(pins[i]);
@@ -356,7 +356,7 @@ pinMain.addEventListener('mouseup', function () {
   onMainPinInitPage();
 });
 
-var onTypeSelectChange = function() {
+var onTypeSelectChange = function () {
   priceInput.min = minPriceIndicator[typeSelect.value];
   priceInput.placeholder = priceInput.min;
 };
