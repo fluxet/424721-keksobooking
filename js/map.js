@@ -63,13 +63,16 @@ var filtersContainer = mapElement.querySelector('.map__filters-container');
 var template = document.querySelector('template');
 var similarPinTemplate = template.content.querySelector('.map__pin');
 var similarAdvTemplate = template.content.querySelector('.map__card');
+var similarAds = [];
 
 var fieldsets = document.querySelectorAll('fieldset');
 var filters = document.querySelectorAll('.map__filters select');
 var noticeForm = document.querySelector('.ad-form');
 var addressInput = document.querySelector('#address');
 var pinMain = document.querySelector('.map__pin--main');
+var advertCards = [];
 var advertCard;
+var advButtonClose;
 var typeSelect = document.querySelector('#type');
 var priceInput = document.querySelector('#price');
 var timeInSelect = document.querySelector('#timein');
@@ -202,13 +205,12 @@ var getPhoto = function (photoSrc) {
   return img;
 };
 
-var closeAd = function (adElement) {
-  var advButtonClose = adElement.querySelector('.popup__close');
-  advButtonClose.addEventListener('click', function () {
-    mapElement.removeChild(adElement);
-    adElement = null;
-    document.removeEventListener('keydown', onPopupEscPress);
-  });
+var closeAd = function () {
+  for (var i = advertCards.length - 1; i >= 0; i--) {
+      mapElement.removeChild(advertCards[i]);
+      advertCards[i] = null;  
+      advertCards.pop();
+    } 
 };
 
 var renderAdv = function (advert) {
@@ -234,13 +236,14 @@ var renderAdv = function (advert) {
     var imgNew = getPhoto(advert.offer.photos[i]);
     imgContainer.appendChild(imgNew);
   }
-  closeAd(adElement);
+  advButtonClose = adElement.querySelector('.popup__close');
+  advButtonClose.addEventListener('click', closeAd);
   return adElement;
 };
 
 var openCard = function (adElement) {
   mapElement.insertBefore(adElement, filtersContainer);
-  advertCard = adElement;
+  advertCards.push(adElement);
   document.addEventListener('keydown', onPopupEscPress);
 };
 
@@ -261,8 +264,7 @@ var setAdress = function () {
 
 var onPopupEscPress = function (evt) {
   if (evt.keyCode === keycodes.ESC) {
-    mapElement.removeChild(advertCard);
-    advertCard = null;
+    closeAd();   
     document.removeEventListener('keydown', onPopupEscPress);
   }
 };
@@ -273,6 +275,13 @@ var initPins = function () {
     fragmentPin.appendChild(renderPin(adverts[i]));
   }
   pinsContainer.appendChild(fragmentPin);
+};
+
+var closePins = function() {
+  var pins = pinsContainer.querySelectorAll('.map__pin');
+  for (var i = 1; i < pins.length; i++) {
+    pinsContainer.removeChild(pins[i]);
+  }
 };
 
 var disableElements = function (elements) {
@@ -330,6 +339,10 @@ var showInvalidElement = function (evt) {
 var onResetFormClear = function (evt) {
   noticeForm.reset();
   setAdress();
+  onTypeSelectChange();
+  closeAd();
+  closePins();
+  pageActivated = false;
   evt.preventDefault();
 };
 
@@ -343,10 +356,12 @@ pinMain.addEventListener('mouseup', function () {
   onMainPinInitPage();
 });
 
-typeSelect.addEventListener('change', function () {
+var onTypeSelectChange = function() {
   priceInput.min = minPriceIndicator[typeSelect.value];
   priceInput.placeholder = priceInput.min;
-});
+};
+
+typeSelect.addEventListener('change', onTypeSelectChange);
 
 timeInSelect.addEventListener('change', function () {
   setTimeSelects(timeInSelect, timeOutSelect);
