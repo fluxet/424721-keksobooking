@@ -63,7 +63,6 @@ var filtersContainer = mapElement.querySelector('.map__filters-container');
 var template = document.querySelector('template');
 var similarPinTemplate = template.content.querySelector('.map__pin');
 var similarAdvTemplate = template.content.querySelector('.map__card');
-var similarAds = [];
 
 var fieldsets = document.querySelectorAll('fieldset');
 var filters = document.querySelectorAll('.map__filters select');
@@ -71,7 +70,6 @@ var noticeForm = document.querySelector('.ad-form');
 var addressInput = document.querySelector('#address');
 var pinMain = document.querySelector('.map__pin--main');
 var advertCards = [];
-var advertCard;
 var advButtonClose;
 var typeSelect = document.querySelector('#type');
 var priceInput = document.querySelector('#price');
