@@ -43,7 +43,11 @@ var keycodes = {
   ENTER: 13,
   ESC: 27
 };
-
+var mapBorders = {
+  X_MIN : 0,
+  Y_MIN : 130,
+  Y_MAX : 630
+};
 var offerTypesTranslation = {
   'квартира': 'flat',
   'дворец': 'palace',
@@ -64,11 +68,17 @@ var template = document.querySelector('template');
 var similarPinTemplate = template.content.querySelector('.map__pin');
 var similarAdvTemplate = template.content.querySelector('.map__card');
 var pins = [];
+var isAdOpened;
+var currentCard;
+var isPinActive;
+var pinActive;
 var fieldsets = document.querySelectorAll('fieldset');
 var filters = document.querySelectorAll('.map__filters select');
 var noticeForm = document.querySelector('.ad-form');
 var addressInput = document.querySelector('#address');
 var pinMain = document.querySelector('.map__pin--main');
+var pinMainXstart = 570;
+var pinMainYstart = 375;
 var typeSelect = document.querySelector('#type');
 var priceInput = document.querySelector('#price');
 var timeInSelect = document.querySelector('#timein');
@@ -197,26 +207,31 @@ var renderPin = function (advert) {
   pins.push(pinElement);
 
   pinElement.addEventListener('click', function () {
+    var currentPin = pinsContainer.querySelector('.map__pin--active');
+    if (isPinActive) {
+      pinActive.classList.remove('map__pin--active');
+    }
     closeCard();
-    pinElement.classList.add('map__pin--active');
+    isAdOpened = false;
     openCard(adElement);
+    pinActive = pinElement;
+    pinActive.classList.add('map__pin--active');
+    isPinActive = true;
   });
   return pinElement;
 };
 
 var openCard = function (adElement) {
   mapElement.insertBefore(adElement, filtersContainer);
+  currentCard = adElement;
+  isAdOpened = true;
   document.addEventListener('keydown', onPopupEscPress);
 };
 
 var closeCard = function () {
-  var currentAd = mapElement.querySelector('.map__card');
-  var currentPin = pinsContainer.querySelector('.map__pin--active');
-  if (currentPin !== null) {
-    currentPin.classList.remove('map__pin--active');
-  }
-  if (currentAd !== null) {
-    mapElement.removeChild(currentAd);
+  if (isAdOpened) {
+    mapElement.removeChild(currentCard);
+    isAdOpened = false;
   }
 };
 
@@ -255,20 +270,56 @@ var renderAdv = function (advert) {
   return adElement;
 };
 
-var getCoords = function () {
-  var left = pinMain.offsetLeft;
-  var top = pinMain.offsetTop;
+var getCoords = function (pinX, pinY) {
+  var left = pinX
+  var top = pinY
   var coords = {
     x: left + Math.round(mainPinParams.WIDTH / 2),
-    y: top + mainPinParams.HEIGHT
+    y: top
   };
   return coords;
 };
 
-var setAdress = function () {
-  var pinCoord = getCoords();
+var setAdress = function (pinX, pinY) {
+  var pinCoord = getCoords(pinX, pinY);
   addressInput.value = pinCoord.x + ', ' + pinCoord.y;
 };
+
+pinMain.addEventListener('mousedown', function (evt) {
+  var startCoords = {
+    x: evt.clientX,
+    y: evt.clientY
+  };
+  var onMouseMove = function(evtMove) {
+    var shift = {
+      x: startCoords.x - evtMove.clientX,
+      y: startCoords.y - evtMove.clientY,
+    };    
+    startCoords = {
+      x: evtMove.clientX,
+      y: evtMove.clientY
+    };
+    mapBorders.xMax = mapElement.clientWidth - mainPinParams.WIDTH;
+    
+    var pinX = pinMain.offsetLeft - shift.x;
+    var pinY = pinMain.offsetTop - shift.y;
+    if ((pinX > mapBorders.X_MIN)
+    && (pinX < mapBorders.xMax)                    
+    && (pinY > mapBorders.Y_MIN) 
+    && (pinY < mapBorders.Y_MAX)) {
+      pinMain.style.left = (pinX) + 'px';
+      pinMain.style.top = (pinY) + 'px';
+    } 
+    setAdress(pinX, pinY);
+  };
+  var onMouseUp = function (upEvt) {
+    onMainPinInitPage();
+    document.removeEventListener('mousemove', onMouseMove);
+    document.removeEventListener('mouseup', onMouseUp);
+  };
+  document.addEventListener('mousemove', onMouseMove);
+  document.addEventListener('mouseup', onMouseUp);
+});
 
 var initPins = function () {
   var fragmentPin = document.createDocumentFragment();
@@ -307,8 +358,9 @@ var onMainPinInitPage = function () {
 
     enableElements(fieldsets);
     enableElements(filters);
-
-    setAdress();
+    
+    isAdOpened = false;
+    isPinActive = false;
   }
   pageActivated = true;
 };
@@ -347,6 +399,8 @@ var onResetClearPage = function (evt) {
   disableElements(filters);
   mapElement.classList.add('map--faded');
   noticeForm.classList.add('ad-form--disabled');
+  pinMain.style.left = pinMainXstart + 'px';
+  pinMain.style.top = pinMainYstart + 'px';
   pageActivated = false;
   evt.preventDefault();
 };
@@ -356,10 +410,6 @@ var pageActivated = false;
 
 disableElements(fieldsets);
 disableElements(filters);
-
-pinMain.addEventListener('mouseup', function () {
-  onMainPinInitPage();
-});
 
 var onTypeSelectChange = function () {
   priceInput.min = minPriceIndicator[typeSelect.value];
