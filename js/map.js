@@ -44,9 +44,9 @@ var keycodes = {
   ESC: 27
 };
 var mapBorders = {
-  X_MIN : 0,
-  Y_MIN : 130,
-  Y_MAX : 630
+  X_MIN: 0,
+  Y_MIN: 130,
+  Y_MAX: 630
 };
 var offerTypesTranslation = {
   'квартира': 'flat',
@@ -207,7 +207,6 @@ var renderPin = function (advert) {
   pins.push(pinElement);
 
   pinElement.addEventListener('click', function () {
-    var currentPin = pinsContainer.querySelector('.map__pin--active');
     if (isPinActive) {
       pinActive.classList.remove('map__pin--active');
     }
@@ -271,8 +270,8 @@ var renderAdv = function (advert) {
 };
 
 var getCoords = function (pinX, pinY) {
-  var left = pinX
-  var top = pinY
+  var left = pinX;
+  var top = pinY;
   var coords = {
     x: left + Math.round(mainPinParams.WIDTH / 2),
     y: top
@@ -290,29 +289,29 @@ pinMain.addEventListener('mousedown', function (evt) {
     x: evt.clientX,
     y: evt.clientY
   };
-  var onMouseMove = function(evtMove) {
+  var onMouseMove = function (evtMove) {
     var shift = {
       x: startCoords.x - evtMove.clientX,
       y: startCoords.y - evtMove.clientY,
-    };    
+    };
     startCoords = {
       x: evtMove.clientX,
       y: evtMove.clientY
     };
     mapBorders.xMax = mapElement.clientWidth - mainPinParams.WIDTH;
-    
+
     var pinX = pinMain.offsetLeft - shift.x;
     var pinY = pinMain.offsetTop - shift.y;
     if ((pinX > mapBorders.X_MIN)
-    && (pinX < mapBorders.xMax)                    
-    && (pinY > mapBorders.Y_MIN) 
+    && (pinX < mapBorders.xMax)
+    && (pinY > mapBorders.Y_MIN)
     && (pinY < mapBorders.Y_MAX)) {
       pinMain.style.left = (pinX) + 'px';
       pinMain.style.top = (pinY) + 'px';
-    } 
+    }
     setAdress(pinX, pinY);
   };
-  var onMouseUp = function (upEvt) {
+  var onMouseUp = function () {
     onMainPinInitPage();
     document.removeEventListener('mousemove', onMouseMove);
     document.removeEventListener('mouseup', onMouseUp);
@@ -358,7 +357,7 @@ var onMainPinInitPage = function () {
 
     enableElements(fieldsets);
     enableElements(filters);
-    
+
     isAdOpened = false;
     isPinActive = false;
   }
