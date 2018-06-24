@@ -351,10 +351,10 @@ var setTimeSelects = function (elem, newValue) {
   elem.value = newValue;
 };
 var onSelectTimeOut = function (evt) {
-   setTimeSelects(timeInSelect, evt.target.value);
+  setTimeSelects(timeInSelect, evt.target.value);
 };
 var onSelectTimeIn = function (evt) {
-   setTimeSelects(timeOutSelect, evt.target.value);
+  setTimeSelects(timeOutSelect, evt.target.value);
 };
 var onMainPinInitPage = function () {
   if (!pageActivated) {
@@ -368,7 +368,7 @@ var onMainPinInitPage = function () {
 
     isAdOpened = false;
     isPinActive = false;
-    
+
     typeSelect.addEventListener('change', onTypeSelectChange);
     timeInSelect.addEventListener('change', onSelectTimeIn);
     timeOutSelect.addEventListener('change', onSelectTimeOut);
