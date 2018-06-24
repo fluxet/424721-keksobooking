@@ -71,6 +71,8 @@ var pins = [];
 var isAdOpened;
 var currentCard;
 var isPinActive;
+var isValid = true;
+var invalidElements = [];
 var pinActive;
 var fieldsets = document.querySelectorAll('fieldset');
 var filters = document.querySelectorAll('.map__filters select');
@@ -329,11 +331,10 @@ var initPins = function () {
 };
 
 var closePins = function () {
-  var pinsLength = pins.length;
-  for (var i = pinsLength - 1; i >= 0; i--) {
-    pinsContainer.removeChild(pins[i]);
-    pins.pop(pins[i]);
-  }
+  pins.forEach( function (pin) {
+    pinsContainer.removeChild(pin);
+  });
+  pins = [];
 };
 
 var disableElements = function (elements) {
@@ -360,12 +361,21 @@ var onMainPinInitPage = function () {
 
     isAdOpened = false;
     isPinActive = false;
+    typeSelect.addEventListener('change', onTypeSelectChange);
+
+    timeInSelect.addEventListener('change', function (evt) {
+      setTimeSelects(timeOutSelect, evt.target.value);
+    });
+    timeOutSelect.addEventListener('change', function (evt) {
+      setTimeSelects(timeInSelect, evt.target.value);
+    });
+    roomNumberSelect.addEventListener('change', function () {
+      disableCapacityOptions();
+    });
+    noticeForm.addEventListener('invalid', showInvalidElement, true);
+    resetButton.addEventListener('click', onResetClearPage);
   }
   pageActivated = true;
-};
-
-var setTimeSelects = function (masterElement, slaveElement) {
-  slaveElement.value = masterElement.value;
 };
 
 var disableCapacityOptions = function () {
@@ -382,16 +392,33 @@ var hideInvalidElement = function (element) {
     element.classList.remove('element-invalid');
   });
 };
-
 var showInvalidElement = function (evt) {
   var invalidElement = evt.target;
   invalidElement.classList.add('element-invalid');
+  invalidElements.push(invalidElement);
+  console.log(invalidElements);
   hideInvalidElement(invalidElement);
 };
 
 var onResetClearPage = function (evt) {
   noticeForm.reset();
   onTypeSelectChange();
+  typeSelect.removeEventListener('change', onTypeSelectChange);
+  timeInSelect.removeEventListener('change', function (evt) {
+    setTimeSelects(timeOutSelect, evt.target.value);
+  });
+  timeOutSelect.removeEventListener('change', function (evt) {
+    setTimeSelects(timeInSelect, evt.target.value);
+  });
+  roomNumberSelect.removeEventListener('change', function () {
+    disableCapacityOptions();
+  });
+  
+  invalidElements.forEach(function (element) {
+    element.classList.remove('element-invalid');
+  });
+  invalidElements = [];
+  
   closeCard();
   closePins();
   disableElements(fieldsets);
@@ -400,34 +427,25 @@ var onResetClearPage = function (evt) {
   noticeForm.classList.add('ad-form--disabled');
   pinMain.style.left = pinMainXstart + 'px';
   pinMain.style.top = pinMainYstart + 'px';
+  setAdress(pinMainXstart, pinMainYstart);
   pageActivated = false;
+  noticeForm.removeEventListener('invalid', showInvalidElement, true);
+  resetButton.removeEventListener('click', onResetClearPage);
   evt.preventDefault();
 };
 
-var adverts = getAdverts();
-var pageActivated = false;
-
-disableElements(fieldsets);
-disableElements(filters);
+var setTimeSelects = function (elem, newValue) {
+  elem.value = newValue;
+};
 
 var onTypeSelectChange = function () {
   priceInput.min = minPriceIndicator[typeSelect.value];
   priceInput.placeholder = priceInput.min;
 };
 
-typeSelect.addEventListener('change', onTypeSelectChange);
+var adverts = getAdverts();
+var pageActivated = false;
 
-timeInSelect.addEventListener('change', function () {
-  setTimeSelects(timeInSelect, timeOutSelect);
-});
-timeOutSelect.addEventListener('change', function () {
-  setTimeSelects(timeOutSelect, timeInSelect);
-});
-
-roomNumberSelect.addEventListener('change', function () {
-  disableCapacityOptions();
-});
-
-noticeForm.addEventListener('invalid', showInvalidElement, true);
-
-resetButton.addEventListener('click', onResetClearPage);
+setAdress(pinMainXstart, pinMainYstart);
+disableElements(fieldsets);
+disableElements(filters);
