@@ -71,7 +71,6 @@ var pins = [];
 var isAdOpened;
 var currentCard;
 var isPinActive;
-var isValid = true;
 var invalidElements = [];
 var pinActive;
 var fieldsets = document.querySelectorAll('fieldset');
@@ -331,7 +330,7 @@ var initPins = function () {
 };
 
 var closePins = function () {
-  pins.forEach( function (pin) {
+  pins.forEach(function (pin) {
     pinsContainer.removeChild(pin);
   });
   pins = [];
@@ -396,7 +395,6 @@ var showInvalidElement = function (evt) {
   var invalidElement = evt.target;
   invalidElement.classList.add('element-invalid');
   invalidElements.push(invalidElement);
-  console.log(invalidElements);
   hideInvalidElement(invalidElement);
 };
 
@@ -404,21 +402,21 @@ var onResetClearPage = function (evt) {
   noticeForm.reset();
   onTypeSelectChange();
   typeSelect.removeEventListener('change', onTypeSelectChange);
-  timeInSelect.removeEventListener('change', function (evt) {
+  timeInSelect.removeEventListener('change', function () {
     setTimeSelects(timeOutSelect, evt.target.value);
   });
-  timeOutSelect.removeEventListener('change', function (evt) {
+  timeOutSelect.removeEventListener('change', function () {
     setTimeSelects(timeInSelect, evt.target.value);
   });
   roomNumberSelect.removeEventListener('change', function () {
     disableCapacityOptions();
   });
-  
+
   invalidElements.forEach(function (element) {
     element.classList.remove('element-invalid');
   });
   invalidElements = [];
-  
+
   closeCard();
   closePins();
   disableElements(fieldsets);
