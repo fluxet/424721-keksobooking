@@ -635,7 +635,10 @@ fieldset {
   -webkit-box-shadow: 0 0 2px 2px #ff6547;
           box-shadow: 0 0 2px 2px #ff6547;
 }
-
+.ad-form__element .element-invalid {
+  border-color: #ff0000;
+  border-width: 3px;
+}
 .ad-form__element--time {
   -ms-flex-preferred-size: 50%;
       flex-basis: 50%;
