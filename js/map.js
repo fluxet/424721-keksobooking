@@ -307,8 +307,8 @@ pinMain.addEventListener('mousedown', function (evt) {
     && (pinX < mapBorders.xMax)
     && (pinY > mapBorders.Y_MIN)
     && (pinY < mapBorders.Y_MAX)) {
-      pinMain.style.left = (pinX) + 'px';
-      pinMain.style.top = (pinY) + 'px';
+      pinMain.style.left = pinX + 'px';
+      pinMain.style.top = pinY + 'px';
     }
     setAdress(pinX, pinY);
   };
