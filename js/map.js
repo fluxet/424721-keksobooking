@@ -275,7 +275,7 @@ var getCoords = function (pinX, pinY) {
   var top = pinY;
   var coords = {
     x: left + Math.round(mainPinParams.WIDTH / 2),
-    y: top
+    y: top + mainPinParams.HEIGHT
   };
   return coords;
 };
@@ -299,16 +299,16 @@ pinMain.addEventListener('mousedown', function (evt) {
       x: evtMove.clientX,
       y: evtMove.clientY
     };
-    mapBorders.xMax = mapElement.clientWidth - mainPinParams.WIDTH;
+    mapBorders.xMax = mapElement.clientWidth;
 
     var pinX = pinMain.offsetLeft - shift.x;
     var pinY = pinMain.offsetTop - shift.y;
-    if ((pinX > mapBorders.X_MIN)
-    && (pinX < mapBorders.xMax)
-    && (pinY > mapBorders.Y_MIN)
-    && (pinY < mapBorders.Y_MAX)) {
-      pinMain.style.left = (pinX) + 'px';
-      pinMain.style.top = (pinY) + 'px';
+    if ((pinX > mapBorders.X_MIN - Math.round(mainPinParams.WIDTH / 2))
+    && (pinX < mapBorders.xMax - Math.round(mainPinParams.WIDTH / 2))
+    && (pinY > mapBorders.Y_MIN - mainPinParams.HEIGHT)
+    && (pinY < mapBorders.Y_MAX - mainPinParams.HEIGHT)) {
+      pinMain.style.left = pinX + 'px';
+      pinMain.style.top = pinY + 'px';
     }
     setAdress(pinX, pinY);
   };
