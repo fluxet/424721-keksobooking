@@ -6,7 +6,7 @@
   var pageActivated = false;
   var fieldsets = document.querySelectorAll('fieldset');
   var filters = document.querySelectorAll('.map__filters select');
-  
+
   var disableElements = function (elements) {
     for (var i = 0; i < elements.length; i++) {
       elements[i].disabled = true;

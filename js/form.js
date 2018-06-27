@@ -58,7 +58,7 @@
     invalidElements.push(invalidElement);
     hideInvalidElement(invalidElement);
   };
-  
+
   var onTypeSelectChange = function () {
     priceInput.min = minPriceIndicator[typeSelect.value];
     priceInput.placeholder = priceInput.min;

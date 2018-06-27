@@ -31,7 +31,7 @@
       x: evt.clientX,
       y: evt.clientY
     };
-    
+
     var onMouseMove = function (evtMove) {
       var shift = {
         x: startCoords.x - evtMove.clientX,
@@ -56,7 +56,7 @@
       };
       window.form.setAdress(address.x, address.y);
     };
-    
+
     var onMouseUp = function () {
       window.map.init();
       document.removeEventListener('mousemove', onMouseMove);

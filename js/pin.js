@@ -12,7 +12,7 @@
   };
   var pins = [];
   var pinActive;
-  
+
   var getAdverts = function () {
     var adverts = [];
     for (var i = 0; i < ADVERTS_NUMBER; i++) {
@@ -49,7 +49,7 @@
     }
     pinsContainer.appendChild(fragmentPin);
   };
-  
+
   var closePin = function () {
     pins.forEach(function (pin) {
       pinsContainer.removeChild(pin);
