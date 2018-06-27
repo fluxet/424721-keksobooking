@@ -1,108 +1,105 @@
 'use strict';
 
 (function () {
-  var invalidElements = [];
-  var noticeForm = document.querySelector('.ad-form');
-  var typeSelect = document.querySelector('#type');
-  var priceInput = document.querySelector('#price');
-  var timeInSelect = document.querySelector('#timein');
-  var timeOutSelect = document.querySelector('#timeout');
-  var roomNumberSelect = document.querySelector('#room_number');
-  var capacitySelect = document.querySelector('#capacity');
-  var capacityOptions = capacitySelect.querySelectorAll('option');
-  var resetButton = noticeForm.querySelector('.ad-form__reset');
-  var addressInput = document.querySelector('#address');
 
-  var minPriceIndicator = {
-    bungalo: 0,
-    flat: 1000,
-    house: 5000,
-    palace: 10000
-  };
+var invalidElements = [];
+var noticeForm = document.querySelector('.ad-form');
+var typeSelect = document.querySelector('#type');
+var priceInput = document.querySelector('#price');
+var timeInSelect = document.querySelector('#timein');
+var timeOutSelect = document.querySelector('#timeout');
+var roomNumberSelect = document.querySelector('#room_number');
+var capacitySelect = document.querySelector('#capacity');
+var capacityOptions = capacitySelect.querySelectorAll('option');
+var resetButton = noticeForm.querySelector('.ad-form__reset');
+var addressInput = document.querySelector('#address');
 
-  var capacityInRoomsVariants = {
-    '1': ['1'],
-    '2': ['1', '2'],
-    '3': ['1', '2', '3'],
-    '100': ['0']
-  };
-  var setTimeSelects = function (elem, newValue) {
-    elem.value = newValue;
-  };
-  var onSelectTimeOut = function (evt) {
-    setTimeSelects(timeInSelect, evt.target.value);
-  };
-  var onSelectTimeIn = function (evt) {
-    setTimeSelects(timeOutSelect, evt.target.value);
-  };
-  var onSelectRoomSetCapacity = function () {
-    var enableOptions = capacityInRoomsVariants[roomNumberSelect.value];
+var minPriceIndicator = {
+  bungalo: 0,
+  flat: 1000,
+  house: 5000,
+  palace: 10000
+};
 
-    capacityOptions.forEach(function (option) {
-      option.disabled = !enableOptions.includes(option.value);
-    });
-    capacitySelect.value = enableOptions[0];
-  };
+var capacityInRoomsVariants = {
+  '1': ['1'],
+  '2': ['1', '2'],
+  '3': ['1', '2', '3'],
+  '100': ['0']
+};
+var setTimeSelects = function (elem, newValue) {
+  elem.value = newValue;
+};
+var onSelectTimeOut = function (evt) {
+  setTimeSelects(timeInSelect, evt.target.value);
+};
+var onSelectTimeIn = function (evt) {
+  setTimeSelects(timeOutSelect, evt.target.value);
+};
+var onSelectRoomSetCapacity = function () {
+  var enableOptions = capacityInRoomsVariants[roomNumberSelect.value];
 
-  var hideInvalidElement = function (element) {
-    element.addEventListener('change', function () {
-      element.classList.remove('element-invalid');
-    });
-  };
-  var onInvalidShowElement = function (evt) {
-    var invalidElement = evt.target;
-    invalidElement.classList.add('element-invalid');
-    invalidElements.push(invalidElement);
-    hideInvalidElement(invalidElement);
-  };
-  var onTypeSelectChange = function () {
-    priceInput.min = minPriceIndicator[typeSelect.value];
-    priceInput.placeholder = priceInput.min;
-  };
+  capacityOptions.forEach(function (option) {
+    option.disabled = !enableOptions.includes(option.value);
+  });
+  capacitySelect.value = enableOptions[0];
+};
 
-  var setAdress = function (pinX, pinY) {
-    var coords = {
-      x: pinX,
-      y: pinY
-    };
-    addressInput.value = coords.x + ', ' + coords.y;
-  };
+var hideInvalidElement = function (element) {
+  element.addEventListener('change', function () {
+    element.classList.remove('element-invalid');
+  });
+};
+var onInvalidShowElement = function (evt) {
+  var invalidElement = evt.target;
+  invalidElement.classList.add('element-invalid');
+  invalidElements.push(invalidElement);
+  hideInvalidElement(invalidElement);
+};
+var onTypeSelectChange = function () {
+  priceInput.min = minPriceIndicator[typeSelect.value];
+  priceInput.placeholder = priceInput.min;
+};
 
-  var initForm = function () {
-    noticeForm.classList.remove('ad-form--disabled');
+var setAdress = function (pinX, pinY) {
+  addressInput.value = pinX + ', ' + pinY;
+};
 
-    typeSelect.addEventListener('change', onTypeSelectChange);
-    timeInSelect.addEventListener('change', onSelectTimeIn);
-    timeOutSelect.addEventListener('change', onSelectTimeOut);
-    roomNumberSelect.addEventListener('change', onSelectRoomSetCapacity);
-    noticeForm.addEventListener('invalid', onInvalidShowElement, true);
-    resetButton.addEventListener('click', onResetClearPage);
-  };
-  var onResetClearPage = function (evt) {
+var initForm = function () {
+  noticeForm.classList.remove('ad-form--disabled');
 
-    noticeForm.reset();
-    onTypeSelectChange();
-    typeSelect.removeEventListener('change', onTypeSelectChange);
-    timeInSelect.removeEventListener('change', onSelectTimeIn);
-    timeOutSelect.removeEventListener('change', onSelectTimeOut);
-    roomNumberSelect.removeEventListener('change', onSelectRoomSetCapacity);
-    invalidElements.forEach(function (element) {
-      element.classList.remove('element-invalid');
-    });
-    invalidElements = [];
-    window.map.disable();
+  typeSelect.addEventListener('change', onTypeSelectChange);
+  timeInSelect.addEventListener('change', onSelectTimeIn);
+  timeOutSelect.addEventListener('change', onSelectTimeOut);
+  roomNumberSelect.addEventListener('change', onSelectRoomSetCapacity);
+  noticeForm.addEventListener('invalid', onInvalidShowElement, true);
+  resetButton.addEventListener('click', onResetClearPage);
+};
+var onResetClearPage = function (evt) {
 
-    noticeForm.classList.add('ad-form--disabled');
+  noticeForm.reset();
+  onTypeSelectChange();
+  typeSelect.removeEventListener('change', onTypeSelectChange);
+  timeInSelect.removeEventListener('change', onSelectTimeIn);
+  timeOutSelect.removeEventListener('change', onSelectTimeOut);
+  roomNumberSelect.removeEventListener('change', onSelectRoomSetCapacity);
+  invalidElements.forEach(function (element) {
+    element.classList.remove('element-invalid');
+  });
+  invalidElements = [];
+  window.map.disable();
 
-    noticeForm.removeEventListener('invalid', onInvalidShowElement, true);
-    resetButton.removeEventListener('click', onResetClearPage);
+  noticeForm.classList.add('ad-form--disabled');
 
-    evt.preventDefault();
-  };
+  noticeForm.removeEventListener('invalid', onInvalidShowElement, true);
+  resetButton.removeEventListener('click', onResetClearPage);
 
-  window.form = {
-    init: initForm,
-    setAdress: setAdress
-  };
+  evt.preventDefault();
+};
+
+window.form = {
+  init: initForm,
+  setAdress: setAdress
+};
 
 })();
