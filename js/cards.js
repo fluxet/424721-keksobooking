@@ -57,7 +57,7 @@
       closeCard();
       document.removeEventListener('keydown', onPopupEscPress);
     }
-  };  
+  };
 
   var renderAdv = function (advert) {
     var adElement = similarAdvTemplate.cloneNode(true);

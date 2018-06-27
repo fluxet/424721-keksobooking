@@ -68,7 +68,7 @@
     roomNumberSelect.addEventListener('change', onSelectRoomSetCapacity);
     noticeForm.addEventListener('invalid', onInvalidShowElement, true);
     resetButton.addEventListener('click', onResetClearPage);
-  };  
+  };
   var onResetClearPage = function (evt) {
 
     noticeForm.reset();
@@ -84,7 +84,7 @@
     window.map.disableMap();
 
     noticeForm.classList.add('ad-form--disabled');
-    
+
     noticeForm.removeEventListener('invalid', onInvalidShowElement, true);
     resetButton.removeEventListener('click', onResetClearPage);
 

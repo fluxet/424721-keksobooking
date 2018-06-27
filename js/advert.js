@@ -1,7 +1,6 @@
 'use strict';
 
 (function () {
-  
   var advertParams = {
     AVATAR_SRC_PATH: 'img/avatars/user',
     AVATAR_SRC_EXT: '.png',
@@ -38,7 +37,7 @@
     'домик': 'house',
     'бунгало': 'bungalo'
   };
-  
+
   var getFeatures = function () {
     var featuresRandom = window.utils.shuffleCopyArray(advertParams.FEATURES);
     var randomLength = window.utils.getRandomValue(0, advertParams.FEATURES.length);
@@ -48,19 +47,19 @@
     }
     return features;
   };
-  
+
   var getType = function (string) {
     var keyWord = string.match(/квартира|дворец|домик|бунгало/)[0];
     var type = offerTypesTranslation[keyWord];
     return type;
   };
-  
+
   var getSrc = function (avatarNumber) {
     var src = (avatarNumber < 10) ? (advertParams.AVATAR_SRC_PATH + '0') : (advertParams.AVATAR_SRC_PATH);
     src += avatarNumber + advertParams.AVATAR_SRC_EXT;
     return src;
   };
-  
+
   var getAdvert = function (index) {
     var locationX = window.utils.getRandomValue(markerBorders.X_MIN, markerBorders.X_MAX);
     var locationY = window.utils.getRandomValue(markerBorders.Y_MIN, markerBorders.Y_MAX);
@@ -99,5 +98,3 @@
   };
 
 })();
-
-

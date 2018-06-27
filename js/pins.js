@@ -43,7 +43,7 @@
       isPinActive = true;
     });
     return pinElement;
-  };  
+  };
 
   var initPins = function () {
     var fragmentPin = document.createDocumentFragment();

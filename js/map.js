@@ -22,13 +22,13 @@
   var initPage = function () {
     if (!pageActivated) {
 
-    mapElement.classList.remove('map--faded');
-    window.form.initForm();
-    window.pins.initPins();
+      mapElement.classList.remove('map--faded');
+      window.form.initForm();
+      window.pins.initPins();
 
-    enableElements(fieldsets);
-    enableElements(filters);
-      
+      enableElements(fieldsets);
+      enableElements(filters);
+
       window.cards.isAdOpened = false;
       window.pins.isPinActive = false;
     }
@@ -41,7 +41,7 @@
     disableElements(fieldsets);
     disableElements(filters);
     mapElement.classList.add('map--faded');
-    
+
     window.pinMain.resetPinMain();
     pageActivated = false;
   };
@@ -54,5 +54,5 @@
     disableMap: disableMap,
     initPage: initPage
   };
-  
+
 })();
