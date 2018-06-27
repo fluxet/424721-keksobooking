@@ -11,6 +11,7 @@
   var capacitySelect = document.querySelector('#capacity');
   var capacityOptions = capacitySelect.querySelectorAll('option');
   var resetButton = noticeForm.querySelector('.ad-form__reset');
+  var addressInput = document.querySelector('#address');
 
   var minPriceIndicator = {
     bungalo: 0,
@@ -59,6 +60,14 @@
     priceInput.placeholder = priceInput.min;
   };
 
+  var setAdress = function (pinX, pinY) {
+    var coords = {
+      x: pinX,
+      y: pinY
+    };
+    addressInput.value = coords.x + ', ' + coords.y;
+  };
+  
   var initForm = function () {
     noticeForm.classList.remove('ad-form--disabled');
 
@@ -81,7 +90,7 @@
       element.classList.remove('element-invalid');
     });
     invalidElements = [];
-    window.map.disableMap();
+    window.map.disable();
 
     noticeForm.classList.add('ad-form--disabled');
 
@@ -92,7 +101,8 @@
   };
 
   window.form = {
-    initForm: initForm
+    init: initForm,
+    setAdress: setAdress
   };
 
 })();

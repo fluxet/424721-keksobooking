@@ -87,11 +87,16 @@
     return adElement;
   };
 
-  window.cards = {
-    renderAdv: renderAdv,
-    openCard: openCard,
-    closeCard: closeCard,
-    isAdOpened: isAdOpened
+  var showNewCard = function (adElement) {
+    closeCard();
+    isAdOpened = false;
+    openCard(adElement);
+  };
+
+  window.card = {
+    render: renderAdv,
+    close: closeCard,
+    show: showNewCard
   };
 
 })();

@@ -11,25 +11,20 @@
     Y_MIN: 130,
     Y_MAX: 630
   };
-  var addressInput = document.querySelector('#address');
 
   var pinMain = document.querySelector('.map__pin--main');
   var pinMainXstart = 570;
   var pinMainYstart = 375;
+  
+  var pinX;
+  var pinY;
 
-  var getCoords = function (pinX, pinY) {
-    var left = pinX;
-    var top = pinY;
+  var getCoords = function (x,y) {
     var coords = {
-      x: left + Math.round(mainPinParams.WIDTH / 2),
-      y: top + mainPinParams.HEIGHT
-    };
+      left: x + Math.round(mainPinParams.WIDTH / 2),
+      top: y + mainPinParams.HEIGHT
+    }
     return coords;
-  };
-
-  var setAdress = function (pinX, pinY) {
-    var pinCoord = getCoords(pinX, pinY);
-    addressInput.value = pinCoord.x + ', ' + pinCoord.y;
   };
 
   pinMain.addEventListener('mousedown', function (evt) {
@@ -47,8 +42,8 @@
         y: evtMove.clientY
       };
 
-      var pinX = pinMain.offsetLeft - shift.x;
-      var pinY = pinMain.offsetTop - shift.y;
+      pinX = pinMain.offsetLeft - shift.x;
+      pinY = pinMain.offsetTop - shift.y;
       if ((pinX > mapBorders.X_MIN - Math.round(mainPinParams.WIDTH / 2))
       && (pinX < mapBorders.X_MAX - Math.round(mainPinParams.WIDTH / 2))
       && (pinY > mapBorders.Y_MIN - mainPinParams.HEIGHT)
@@ -56,10 +51,14 @@
         pinMain.style.left = pinX + 'px';
         pinMain.style.top = pinY + 'px';
       }
-      setAdress(pinX, pinY);
+      var address = {
+        x: getCoords(pinX, 0).left,
+        y: getCoords(0, pinY).top
+      };
+      window.form.setAdress(address.x, address.y);
     };
     var onMouseUp = function () {
-      window.map.initPage();
+      window.map.init();
       document.removeEventListener('mousemove', onMouseMove);
       document.removeEventListener('mouseup', onMouseUp);
     };
@@ -70,11 +69,15 @@
   var resetPinMain = function () {
     pinMain.style.left = pinMainXstart + 'px';
     pinMain.style.top = pinMainYstart + 'px';
-    setAdress(pinMainXstart, pinMainYstart);
+    var addressStart = {
+        x: getCoords(pinMainXstart, 0).left,
+        y: getCoords(0, pinMainYstart).top
+      };
+    window.form.setAdress(addressStart.x, addressStart.y);
   };
 
   window.pinMain = {
-    resetPinMain: resetPinMain
+    reset: resetPinMain
   };
 
 })();

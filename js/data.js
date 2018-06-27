@@ -60,7 +60,7 @@
     return src;
   };
 
-  var getAdvert = function (index) {
+  window.data = function (index) {
     var locationX = window.utils.getRandomValue(markerBorders.X_MIN, markerBorders.X_MAX);
     var locationY = window.utils.getRandomValue(markerBorders.Y_MIN, markerBorders.Y_MAX);
 
@@ -93,8 +93,5 @@
     return advert;
   };
 
-  window.advert = {
-    getAdvert: getAdvert
-  };
 
 })();

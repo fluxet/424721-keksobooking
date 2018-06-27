@@ -16,7 +16,7 @@
   var getAdverts = function () {
     var adverts = [];
     for (var i = 0; i < ADVERTS_NUMBER; i++) {
-      adverts[i] = window.advert.getAdvert(i);
+      adverts[i] = window.data(i);
     }
     return adverts;
   };
@@ -24,7 +24,7 @@
 
   var renderPin = function (advert) {
     var pinElement = similarPinTemplate.cloneNode(true);
-    var adElement = window.cards.renderAdv(advert);
+    var adElement = window.card.render(advert);
     pinElement.style.left = advert.location.x - markerParams.WIDTH / 2 + 'px';
     pinElement.style.top = advert.location.y - markerParams.HEIGHT + 'px';
     pinElement.querySelector('img').src = advert.author.avatar;
@@ -35,9 +35,7 @@
       if (isPinActive) {
         pinActive.classList.remove('map__pin--active');
       }
-      window.cards.closeCard();
-      window.cards.isAdOpened = false;
-      window.cards.openCard(adElement);
+      window.card.show(adElement);
       pinActive = pinElement;
       pinActive.classList.add('map__pin--active');
       isPinActive = true;
@@ -45,23 +43,22 @@
     return pinElement;
   };
 
-  var initPins = function () {
+  var initPin = function () {
     var fragmentPin = document.createDocumentFragment();
     for (var i = 0; i < adverts.length; i++) {
       fragmentPin.appendChild(renderPin(adverts[i]));
     }
     pinsContainer.appendChild(fragmentPin);
   };
-  var closePins = function () {
+  var closePin = function () {
     pins.forEach(function (pin) {
       pinsContainer.removeChild(pin);
     });
     pins = [];
   };
 
-  window.pins = {
-    initPins: initPins,
-    closePins: closePins,
-    isPinActive: isPinActive
+  window.pin = {
+    init: initPin,
+    close: closePin
   };
 })();

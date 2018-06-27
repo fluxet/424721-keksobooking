@@ -23,36 +23,33 @@
     if (!pageActivated) {
 
       mapElement.classList.remove('map--faded');
-      window.form.initForm();
-      window.pins.initPins();
+      window.form.init();
+      window.pin.init();
 
       enableElements(fieldsets);
-      enableElements(filters);
-
-      window.cards.isAdOpened = false;
-      window.pins.isPinActive = false;
+      enableElements(filters);  
     }
     pageActivated = true;
   };
 
   var disableMap = function () {
-    window.cards.closeCard();
-    window.pins.closePins();
+    window.card.close();
+    window.pin.close();
     disableElements(fieldsets);
     disableElements(filters);
     mapElement.classList.add('map--faded');
 
-    window.pinMain.resetPinMain();
+    window.pinMain.reset();
     pageActivated = false;
   };
 
-  window.pinMain.resetPinMain();
+  window.pinMain.reset();
   disableElements(fieldsets);
   disableElements(filters);
 
   window.map = {
-    disableMap: disableMap,
-    initPage: initPage
+    disable: disableMap,
+    init: initPage
   };
 
 })();
