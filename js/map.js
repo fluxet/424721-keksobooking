@@ -27,7 +27,7 @@
       window.pin.init();
 
       enableElements(fieldsets);
-      enableElements(filters);  
+      enableElements(filters);
     }
     pageActivated = true;
   };

@@ -15,15 +15,15 @@
   var pinMain = document.querySelector('.map__pin--main');
   var pinMainXstart = 570;
   var pinMainYstart = 375;
-  
+
   var pinX;
   var pinY;
 
-  var getCoords = function (x,y) {
+  var getCoords = function (x, y) {
     var coords = {
       left: x + Math.round(mainPinParams.WIDTH / 2),
       top: y + mainPinParams.HEIGHT
-    }
+    };
     return coords;
   };
 
@@ -70,9 +70,9 @@
     pinMain.style.left = pinMainXstart + 'px';
     pinMain.style.top = pinMainYstart + 'px';
     var addressStart = {
-        x: getCoords(pinMainXstart, 0).left,
-        y: getCoords(0, pinMainYstart).top
-      };
+      x: getCoords(pinMainXstart, 0).left,
+      y: getCoords(0, pinMainYstart).top
+    };
     window.form.setAdress(addressStart.x, addressStart.y);
   };
 

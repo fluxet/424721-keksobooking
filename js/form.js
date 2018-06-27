@@ -67,7 +67,7 @@
     };
     addressInput.value = coords.x + ', ' + coords.y;
   };
-  
+
   var initForm = function () {
     noticeForm.classList.remove('ad-form--disabled');
 
