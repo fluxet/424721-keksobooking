@@ -13,6 +13,7 @@
   var capacityOptions = capacitySelect.querySelectorAll('option');
   var resetButton = noticeForm.querySelector('.ad-form__reset');
   var addressInput = document.querySelector('#address');
+  var successElement = document.querySelector('.success');
   var minPriceIndicator = {
     bungalo: 0,
     flat: 1000,
@@ -78,7 +79,7 @@
     resetButton.addEventListener('click', onResetClearPage);
   };
 
-  var onResetClearPage = function (evt) {
+  var clearPage = function () {
     noticeForm.reset();
     onTypeSelectChange();
     typeSelect.removeEventListener('change', onTypeSelectChange);
@@ -91,10 +92,31 @@
     invalidElements = [];
     window.map.disable();
     noticeForm.classList.add('ad-form--disabled');
+  };
+
+  var onResetClearPage = function (evt) {
+    clearPage();
     noticeForm.removeEventListener('invalid', onInvalidShowElement, true);
     resetButton.removeEventListener('click', onResetClearPage);
     evt.preventDefault();
   };
+  var onSubmitSuccess = function () {
+    clearPage();
+    successElement.classList.remove('hidden');
+    successElement.addEventListener('click', function () {
+      successElement.classList.add('hidden');
+    });
+    console.log('sucess');
+  };
+
+  var onSubmitError = function (message) {
+    window.backend.showFailureMessage(message);
+  };
+
+  noticeForm.addEventListener('submit', function (evt) {
+    window.backend.sendData(onSubmitSuccess, onSubmitError, new FormData(noticeForm));
+    evt.preventDefault();
+  });
 
   window.form = {
     init: initForm,

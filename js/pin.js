@@ -12,16 +12,9 @@
   };
   var pins = [];
   var pinActive;
+  var newData = [];
+  var adverts;
 
-  var getAdverts = function () {
-    var adverts = [];
-    for (var i = 0; i < ADVERTS_NUMBER; i++) {
-      adverts[i] = window.getData(i);
-    }
-    return adverts;
-  };
-
-  var adverts = getAdverts();
   var renderPin = function (advert) {
     var pinElement = similarPinTemplate.cloneNode(true);
     var adElement = window.card.render(advert);
@@ -56,6 +49,16 @@
     });
     pins = [];
   };
+
+  var onSuccess = function (objects) {
+    adverts = objects;
+  };
+  
+  var onError = function (message) {
+    window.backend.showFailureMessage(message);
+  };
+
+  window.backend.loadData(onSuccess, onError);
 
   window.pin = {
     init: initPin,
