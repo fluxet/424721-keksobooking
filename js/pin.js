@@ -53,7 +53,7 @@
   };
 
   var onError = function (message) {
-    window.backend.showFailureMessage(message);
+    window.renderFailureMessage(message);
   };
 
   window.backend.loadData(onSuccess, onError);

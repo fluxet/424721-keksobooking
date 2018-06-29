@@ -109,7 +109,7 @@
   };
 
   var onSubmitError = function (message) {
-    window.backend.showFailureMessage(message);
+    window.renderFailureMessage(message);
   };
 
   noticeForm.addEventListener('submit', function (evt) {
