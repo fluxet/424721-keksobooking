@@ -1,7 +1,8 @@
 'use strict';
 
 (function () {
-
+  
+  var ESC_KEYCODE = 27;
   var invalidElements = [];
   var noticeForm = document.querySelector('.ad-form');
   var typeSelect = document.querySelector('#type');
@@ -26,7 +27,8 @@
     '3': ['1', '2', '3'],
     '100': ['0']
   };
-
+  var isSuccessMessageOpen;
+  
   var setTimeSelects = function (elem, newValue) {
     elem.value = newValue;
   };
@@ -100,12 +102,28 @@
     resetButton.removeEventListener('click', onResetClearPage);
     evt.preventDefault();
   };
+
+  var closeSuccessMessage = function () {
+    if(isSuccessMessageOpen === true) {
+      successElement.classList.add('hidden'); 
+    }
+    isSuccessMessageOpen = false;
+    successElement.removeEventListener('click', closeSuccessMessage);
+  };
+
+   var onEscMessageClose = function (evt) {
+    if (evt.keyCode === ESC_KEYCODE) {
+      closeSuccessMessage();
+      document.removeEventListener('keydown', onEscMessageClose);
+    }
+  };
+
   var onSubmitSuccess = function () {
     clearPage();
     successElement.classList.remove('hidden');
-    successElement.addEventListener('click', function () {
-      successElement.classList.add('hidden');
-    });
+    isSuccessMessageOpen = true;
+    successElement.addEventListener('click', closeSuccessMessage);
+    document.addEventListener('keydown', onEscMessageClose);
   };
 
   var onSubmitError = function (message) {
