@@ -106,7 +106,6 @@
     successElement.addEventListener('click', function () {
       successElement.classList.add('hidden');
     });
-    console.log('sucess');
   };
 
   var onSubmitError = function (message) {

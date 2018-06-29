@@ -2,7 +2,6 @@
 
 (function () {
 
-  var ADVERTS_NUMBER = 8;
   var pinsContainer = document.querySelector('.map__pins');
   var similarPinTemplate = document.querySelector('template').content.querySelector('.map__pin');
   var isPinActive;
@@ -12,7 +11,6 @@
   };
   var pins = [];
   var pinActive;
-  var newData = [];
   var adverts;
 
   var renderPin = function (advert) {
@@ -53,7 +51,7 @@
   var onSuccess = function (objects) {
     adverts = objects;
   };
-  
+
   var onError = function (message) {
     window.backend.showFailureMessage(message);
   };
