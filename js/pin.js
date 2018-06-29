@@ -2,7 +2,6 @@
 
 (function () {
 
-  var ADVERTS_NUMBER = 8;
   var pinsContainer = document.querySelector('.map__pins');
   var similarPinTemplate = document.querySelector('template').content.querySelector('.map__pin');
   var isPinActive;
@@ -12,16 +11,8 @@
   };
   var pins = [];
   var pinActive;
+  var adverts;
 
-  var getAdverts = function () {
-    var adverts = [];
-    for (var i = 0; i < ADVERTS_NUMBER; i++) {
-      adverts[i] = window.getData(i);
-    }
-    return adverts;
-  };
-
-  var adverts = getAdverts();
   var renderPin = function (advert) {
     var pinElement = similarPinTemplate.cloneNode(true);
     var adElement = window.card.render(advert);
@@ -56,6 +47,16 @@
     });
     pins = [];
   };
+
+  var onSuccess = function (objects) {
+    adverts = objects;
+  };
+
+  var onError = function (message) {
+    window.renderFailureMessage(message);
+  };
+
+  window.backend.loadData(onSuccess, onError);
 
   window.pin = {
     init: initPin,

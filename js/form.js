@@ -2,6 +2,7 @@
 
 (function () {
 
+  var ESC_KEYCODE = 27;
   var invalidElements = [];
   var noticeForm = document.querySelector('.ad-form');
   var typeSelect = document.querySelector('#type');
@@ -13,6 +14,7 @@
   var capacityOptions = capacitySelect.querySelectorAll('option');
   var resetButton = noticeForm.querySelector('.ad-form__reset');
   var addressInput = document.querySelector('#address');
+  var successElement = document.querySelector('.success');
   var minPriceIndicator = {
     bungalo: 0,
     flat: 1000,
@@ -25,6 +27,7 @@
     '3': ['1', '2', '3'],
     '100': ['0']
   };
+  var isSuccessMessageOpen;
 
   var setTimeSelects = function (elem, newValue) {
     elem.value = newValue;
@@ -78,7 +81,7 @@
     resetButton.addEventListener('click', onResetClearPage);
   };
 
-  var onResetClearPage = function (evt) {
+  var clearPage = function () {
     noticeForm.reset();
     onTypeSelectChange();
     typeSelect.removeEventListener('change', onTypeSelectChange);
@@ -91,10 +94,46 @@
     invalidElements = [];
     window.map.disable();
     noticeForm.classList.add('ad-form--disabled');
+  };
+
+  var onResetClearPage = function (evt) {
+    clearPage();
     noticeForm.removeEventListener('invalid', onInvalidShowElement, true);
     resetButton.removeEventListener('click', onResetClearPage);
     evt.preventDefault();
   };
+
+  var closeSuccessMessage = function () {
+    if (isSuccessMessageOpen === true) {
+      successElement.classList.add('hidden');
+    }
+    isSuccessMessageOpen = false;
+    successElement.removeEventListener('click', closeSuccessMessage);
+  };
+
+  var onEscMessageClose = function (evt) {
+    if (evt.keyCode === ESC_KEYCODE) {
+      closeSuccessMessage();
+      document.removeEventListener('keydown', onEscMessageClose);
+    }
+  };
+
+  var onSubmitSuccess = function () {
+    clearPage();
+    successElement.classList.remove('hidden');
+    isSuccessMessageOpen = true;
+    successElement.addEventListener('click', closeSuccessMessage);
+    document.addEventListener('keydown', onEscMessageClose);
+  };
+
+  var onSubmitError = function (message) {
+    window.renderFailureMessage(message);
+  };
+
+  noticeForm.addEventListener('submit', function (evt) {
+    window.backend.sendData(onSubmitSuccess, onSubmitError, new FormData(noticeForm));
+    evt.preventDefault();
+  });
 
   window.form = {
     init: initForm,
