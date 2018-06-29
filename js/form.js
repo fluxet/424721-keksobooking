@@ -1,7 +1,7 @@
 'use strict';
 
 (function () {
-  
+
   var ESC_KEYCODE = 27;
   var invalidElements = [];
   var noticeForm = document.querySelector('.ad-form');
@@ -28,7 +28,7 @@
     '100': ['0']
   };
   var isSuccessMessageOpen;
-  
+
   var setTimeSelects = function (elem, newValue) {
     elem.value = newValue;
   };
@@ -104,14 +104,14 @@
   };
 
   var closeSuccessMessage = function () {
-    if(isSuccessMessageOpen === true) {
-      successElement.classList.add('hidden'); 
+    if (isSuccessMessageOpen === true) {
+      successElement.classList.add('hidden');
     }
     isSuccessMessageOpen = false;
     successElement.removeEventListener('click', closeSuccessMessage);
   };
 
-   var onEscMessageClose = function (evt) {
+  var onEscMessageClose = function (evt) {
     if (evt.keyCode === ESC_KEYCODE) {
       closeSuccessMessage();
       document.removeEventListener('keydown', onEscMessageClose);
