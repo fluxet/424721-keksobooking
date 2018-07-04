@@ -7,12 +7,6 @@
   var housingPrice = document.querySelector('#housing-price');
   var housingRooms = document.querySelector('#housing-rooms');
   var housingGuests = document.querySelector('#housing-guests');
-  var wifi = document.querySelector('#filter-wifi');
-  var dishwasher = document.querySelector('#filter-dishwasher');
-  var parking = document.querySelector('#filter-parking');
-  var washer = document.querySelector('#filter-washer');
-  var elevator = document.querySelector('#filter-elevator');
-  var conditioner = document.querySelector('#filter-conditioner');
   var featuresFieldset = document.querySelector('#housing-features');
   var features = featuresFieldset.querySelectorAll('.map__checkbox');
   var selects = document.querySelectorAll('.map__filter');
@@ -22,12 +16,6 @@
     low: [0, 9999],
     middle: [10000, 49999],
     high: [50000, Infinity]
-  };
-  var rangeIndexIndicator = {
-    housingType: 0,
-    housingPrice: 1,
-    housingRooms: 2,
-    housingGuests: 3
   };
   var rangeIndexes = {
     type: 0,
@@ -39,7 +27,7 @@
   var allFeaturesFilters;
   var dataFiltered = [];
 
-  var setDeafaultSettings = function() {
+  var setDeafaultSettings = function () {
     advertsCopy.forEach(function (advert) {
       advert.range = [1, 1, 1, 1];
     });
@@ -115,7 +103,7 @@
     window.pin.init();
   });
 
-  var getDataFiltered = function() {
+  var getDataFiltered = function () {
     dataFiltered = allFeaturesFilters.filter(function (advert) {
       return advert.range.join('') === '1111';
     });
@@ -124,7 +112,7 @@
 
   var onSuccess = function (objects) {
     advertsCopy = objects.slice();
-    setDeafaultSettings();      
+    setDeafaultSettings();
     features.forEach(function (feature) {
       feature.addEventListener('change', getFilteredFeatures);
     });
@@ -142,7 +130,7 @@
   window.backend.loadData(onSuccess, onError);
 
   var getFilteredData = function () {
-    return  dataFiltered.slice(0, OUTPUT_DATA_CAPACITY);
+    return dataFiltered.slice(0, OUTPUT_DATA_CAPACITY);
   };
 
   window.filters = {

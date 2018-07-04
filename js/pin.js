@@ -11,7 +11,6 @@
   };
   var pins = [];
   var pinActive;
-  var adverts;
   var filteredData;
 
   var renderPin = function (advert) {
