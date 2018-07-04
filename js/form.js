@@ -76,6 +76,7 @@
     typeSelect.addEventListener('change', onTypeSelectChange);
     timeInSelect.addEventListener('change', onSelectTimeIn);
     timeOutSelect.addEventListener('change', onSelectTimeOut);
+    onSelectRoomSetCapacity();
     roomNumberSelect.addEventListener('change', onSelectRoomSetCapacity);
     noticeForm.addEventListener('invalid', onInvalidShowElement, true);
     resetButton.addEventListener('click', onResetClearPage);
@@ -93,6 +94,7 @@
     });
     invalidElements = [];
     window.map.disable();
+    window.filters.clear();
     noticeForm.classList.add('ad-form--disabled');
   };
 
