@@ -12,6 +12,7 @@
   var pins = [];
   var pinActive;
   var adverts;
+	var filteredData;
 
   var renderPin = function (advert) {
     var pinElement = similarPinTemplate.cloneNode(true);
@@ -34,9 +35,13 @@
   };
 
   var initPin = function () {
+		filteredData = window.filters.get();
+		if (filteredData === undefined) {
+			filteredData = [];
+		}
     var fragmentPin = document.createDocumentFragment();
-    for (var i = 0; i < adverts.length; i++) {
-      fragmentPin.appendChild(renderPin(adverts[i]));
+    for (var i = 0; i < filteredData.length; i++) {
+      fragmentPin.appendChild(renderPin(filteredData[i]));
     }
     pinsContainer.appendChild(fragmentPin);
   };
@@ -47,20 +52,10 @@
     });
     pins = [];
   };
-
-  var onSuccess = function (objects) {
-    adverts = objects;
-  };
-
-  var onError = function (message) {
-    window.renderFailureMessage(message);
-  };
-
-  window.backend.loadData(onSuccess, onError);
-
+	
   window.pin = {
     init: initPin,
-    close: closePin
+    close: closePin,
   };
-
+	
 })();
