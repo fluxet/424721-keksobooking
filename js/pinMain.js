@@ -43,21 +43,21 @@
       };
       pinX = pinMain.offsetLeft - shift.x;
       pinY = pinMain.offsetTop - shift.y;
-			if (pinX < mapBorders.X_MIN - Math.round(mainPinParams.WIDTH / 2)) {
-				pinX =  mapBorders.X_MIN - Math.round(mainPinParams.WIDTH / 2);
-			}
-			if (pinX > mapBorders.X_MAX - Math.round(mainPinParams.WIDTH / 2)) {
-				pinX = mapBorders.X_MAX - Math.round(mainPinParams.WIDTH / 2);
-			}
-			if (pinY < mapBorders.Y_MIN - mainPinParams.HEIGHT) {
-				pinY = mapBorders.Y_MIN - mainPinParams.HEIGHT;
-			}
-			if (pinY > mapBorders.Y_MAX - mainPinParams.HEIGHT) {
-				pinY = mapBorders.Y_MAX - mainPinParams.HEIGHT;
-			}			
-			pinMain.style.left = pinX + 'px';
-			pinMain.style.top = pinY + 'px';
-      
+      if (pinX < mapBorders.X_MIN - Math.round(mainPinParams.WIDTH / 2)) {
+        pinX = mapBorders.X_MIN - Math.round(mainPinParams.WIDTH / 2);
+      }
+      if (pinX > mapBorders.X_MAX - Math.round(mainPinParams.WIDTH / 2)) {
+        pinX = mapBorders.X_MAX - Math.round(mainPinParams.WIDTH / 2);
+      }
+      if (pinY < mapBorders.Y_MIN - mainPinParams.HEIGHT) {
+        pinY = mapBorders.Y_MIN - mainPinParams.HEIGHT;
+      }
+      if (pinY > mapBorders.Y_MAX - mainPinParams.HEIGHT) {
+        pinY = mapBorders.Y_MAX - mainPinParams.HEIGHT;
+      }
+      pinMain.style.left = pinX + 'px';
+      pinMain.style.top = pinY + 'px';
+
       var address = {
         x: getCoords(pinX, 0).left,
         y: getCoords(0, pinY).top
