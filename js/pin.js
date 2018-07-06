@@ -35,9 +35,6 @@
 
   var initPin = function () {
     filteredData = window.filters.get();
-    if (filteredData === undefined) {
-      filteredData = [];
-    }
     var fragmentPin = document.createDocumentFragment();
     for (var i = 0; i < filteredData.length; i++) {
       fragmentPin.appendChild(renderPin(filteredData[i]));
