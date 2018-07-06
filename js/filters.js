@@ -1,7 +1,7 @@
 'use strict';
 
 (function () {
-  
+
   var OUTPUT_DATA_CAPACITY = 5;
   var advertsCopy;
   var housingType = document.querySelector('#housing-type');
@@ -50,7 +50,7 @@
     return getFlagFilter(housingType, advert.offer.type);
   };
 
-   var getRoomsCondition = function (advert) {
+  var getRoomsCondition = function (advert) {
     return getFlagFilter(housingRooms, advert.offer.rooms);
   };
 
@@ -62,10 +62,11 @@
     if (housingPrice.value === 'any') {
       return true;
     }
-    if ((advert.offer.price >= priceIndicator[housingPrice.value].min) 
+    if ((advert.offer.price >= priceIndicator[housingPrice.value].min)
     && (advert.offer.price <= priceIndicator[housingPrice.value].max)) {
       return true;
-    } 
+    }
+  return false
   };
 
   var getFilteredFeatures = function () {
