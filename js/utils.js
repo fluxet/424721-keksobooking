@@ -2,27 +2,20 @@
 
 (function () {
 
-  var getRandomValue = function (min, max) {
-    return Math.floor(Math.random() * (max + 1 - min)) + min;
-  };
+  var DEBOUNCE_INTERVAL = 500;
 
-  var shuffleCopyArray = function (arrayOld) {
-    var arrayNew = [];
-    for (var i = 0; i < arrayOld.length; i++) {
-      arrayNew.push(arrayOld[i]);
-    }
-    for (i = 0; i < arrayNew.length; i++) {
-      var elementCopy = arrayNew[i];
-      var randomIndex = getRandomValue(0, arrayNew.length - 1);
-      arrayNew[i] = arrayNew[randomIndex];
-      arrayNew[randomIndex] = elementCopy;
-    }
-    return arrayNew;
-  };
+  window.debounce = function (fun) {
+    var lastTimeout = null;
 
-  window.utils = {
-    getRandomValue: getRandomValue,
-    shuffleCopyArray: shuffleCopyArray
+    return function () {
+      var args = arguments;
+      if (lastTimeout) {
+        window.clearTimeout(lastTimeout);
+      }
+      lastTimeout = window.setTimeout(function () {
+        fun.apply(null, args);
+      }, DEBOUNCE_INTERVAL);
+    };
   };
 
 })();
