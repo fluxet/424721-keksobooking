@@ -33,7 +33,7 @@
     return pinElement;
   };
 
-  var disactivatePin = function () {
+  var deactivatePin = function () {
     pinActive.classList.remove('map__pin--active');
   };
 
@@ -56,7 +56,7 @@
   window.pin = {
     init: initPin,
     close: closePin,
-    disactivate: disactivatePin
+    deactivate: deactivatePin
   };
 
 })();
