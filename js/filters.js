@@ -66,7 +66,7 @@
     && (advert.offer.price <= priceIndicator[housingPrice.value].max)) {
       return true;
     }
-  return false
+    return false;
   };
 
   var getFilteredFeatures = function () {
