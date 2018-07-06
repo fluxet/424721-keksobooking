@@ -81,14 +81,14 @@
     return dataFiltered;
   };
 
-  var onFormFiltersChange = function () {
+  var onFormFiltersChange = window.debounce(function () {
     dataFiltered = advertsCopy;
     dataFiltered = getFilteredFeatures().filter(getTypeCondition)
     .filter(getPriceCondition).filter(getRoomsCondition).filter(getGuestsCondition);
     window.card.close();
     window.pin.close();
     window.pin.init();
-  };
+  });
 
   var onSuccess = function (objects) {
     setDeafaultSettings();

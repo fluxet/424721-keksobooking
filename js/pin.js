@@ -33,6 +33,10 @@
     return pinElement;
   };
 
+  var disactivatePin = function () {
+    pinActive.classList.remove('map__pin--active');
+  };
+
   var initPin = function () {
     filteredData = window.filters.get();
     var fragmentPin = document.createDocumentFragment();
@@ -52,6 +56,7 @@
   window.pin = {
     init: initPin,
     close: closePin,
+    disactivate: disactivatePin
   };
 
 })();

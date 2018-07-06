@@ -47,6 +47,7 @@
     if (isAdOpened) {
       mapElement.removeChild(currentCard);
       isAdOpened = false;
+      window.pin.disactivate();
     }
   };
 
